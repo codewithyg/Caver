@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caver</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64," />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <!-- Load Font Awesome Icons -->
+    <script src="https://kit.fontawesome.com/your-font-awesome-kit.js" crossorigin="anonymous"></script>
+</head>
+
+<body class="font-['Newsreader','Noto Sans',sans-serif] bg-slate-50 min-h-screen flex flex-col">
+    <!-- Navigation Bar -->
+    <div class="flex flex-col h-full">
+        <header class="flex items-center justify-between border-b border-slate-200 px-10 py-3">
+            <div class="flex items-center gap-4 text-slate-800">
+                <div class="w-4 h-4">
+                    <svg viewBox="0 0 48 48" fill="currentColor">
+                        <path d="M44 4H30.6666V17.3334H17.3334V30.6666H4V44H44V4Z" />
+                    </svg>
+                </div>
+                <a href="/" class="text-lg font-bold tracking-tight">Caver</a>
+            </div>
+            <nav class="flex gap-8 ml-auto">
+                <a class="text-sm font-medium text-slate-800" href="/news">뉴스</a>
+                <a class="text-sm font-medium text-slate-800" href="/weather">날씨</a>
+                <a class="text-sm font-medium text-slate-800" href="/stock">증권</a>
+                <a class="text-sm font-medium text-slate-800" href="/community">게시판</a>
+            </nav>
+            <div class="flex items-center gap-2 ml-4">
+                <button class="btn-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                        viewBox="0 0 256 256">
+                        <path
+                            d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24ZM74.08,197.5a64,64,0,0,1,107.84,0,87.83,87.83,0,0,1-107.84,0ZM96,120a32,32,0,1,1,32,32A32,32,0,0,1,96,120Zm97.76,66.41a79.66,79.66,0,0,0-36.06-28.75,48,48,0,1,0-59.4,0,79.66,79.66,0,0,0-36.06,28.75,88,88,0,1,1,131.52,0Z" />
+                    </svg>
+                </button>
+                <button class="btn-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                        viewBox="0 0 256 256">
+                        <path
+                            d="M224,128a8,8,0,0,1-8,8H40a8,8,0,0,1,0-16H216A8,8,0,0,1,224,128ZM40,72H216a8,8,0,0,0,0-16H40a8,8,0,0,0,0,16ZM216,184H40a8,8,0,0,0,0,16H216a8,8,0,0,0,0-16Z" />
+                    </svg>
+                </button>
+            </div>
+        </header>
+    </div>
+    <div>
+        <form action="/search" method="GET" class="search-form">
+            <input type="text" name="query" placeholder="검색어를 입력하세요" class="search-input" required>
+            <button type="submit" class="search-button">검색</button>
+        </form>
+    </div>
+    
+</body>
+</html>

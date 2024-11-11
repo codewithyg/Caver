@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caver</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64," />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <!-- Load Font Awesome Icons -->
+    <script src="https://kit.fontawesome.com/your-font-awesome-kit.js" crossorigin="anonymous"></script>
+</head>
+
+<body class="font-['Newsreader','Noto Sans',sans-serif] bg-slate-50 min-h-screen flex flex-col">
+    <!-- Navigation Bar -->
+    <div class="flex flex-col h-full">
+        <header class="flex items-center justify-between border-b border-slate-200 px-10 py-3">
+            <div class="flex items-center gap-4 text-slate-800">
+                <div class="w-4 h-4">
+                    <svg viewBox="0 0 48 48" fill="currentColor">
+                        <path d="M44 4H30.6666V17.3334H17.3334V30.6666H4V44H44V4Z" />
+                    </svg>
+                </div>
+                <a href="/" class="text-lg font-bold tracking-tight">Caver</a>
+            </div>
+            <nav class="flex gap-8 ml-auto">
+                <a class="text-sm font-medium text-slate-800" href="/news">뉴스</a>
+                <a class="text-sm font-medium text-slate-800" href="/weather">날씨</a>
+                <a class="text-sm font-medium text-slate-800" href="/stock">증권</a>
+                <a class="text-sm font-medium text-slate-800" href="/community">게시판</a>
+            </nav>
+            <div class="flex items-center gap-2 ml-4">
+                <button class="btn-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
+                        viewBox="0 0 256 256">
+                        <path
+                            d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24ZM74.08,197.5a64,64,0,0,1,107.84,0,87.83,87.83,0,0,1-107.84,0ZM96,120a32,32,0,1,1,32,32A32,32,0,0,1,96,120Zm97.76,66.41a79.66,79.66,0,0,0-36.06-28.75,48,48,0,1,0-59.4,0,79.66,79.66,0,0,0-36.06,28.75,88,88,0,1,1,131.52,0Z" />
+                    </svg>
+                </button>
+                <!-- Button for Hamburger Menu -->
+                <button class="btn-icon hamburger">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
+                        viewBox="0 0 256 256">
+                        <path
+                            d="M224,128a8,8,0,0,1-8,8H40a8,8,0,0,1,0-16H216A8,8,0,0,1,224,128ZM40,72H216a8,8,0,0,0,0-16H40a8,8,0,0,0,0,16ZM216,184H40a8,8,0,0,0,0,16H216a8,8,0,0,0,0-16Z" />
+                    </svg>
+                </button>
+
+                <!-- Hidden Menu (initially hidden) -->
+                <nav class="hidden-menu">
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">About</a></li>
+                        <li><a href="#">Services</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+    </div>
+    <div>
+        <form action="/search" method="GET" class="search-form">
+            <input type="text" name="query" placeholder="검색어를 입력하세요" class="search-input" required>
+            <button type="submit" class="search-button">검색</button>
+        </form>
+    </div>
+
+    <!-- News Section -->
+    <div class="news-section">
+        <h2>Latest News</h2>
+        <div class="news-container">
+            <div class="news-card">
+                <img src="https://loremflickr.com/400/400/news" alt="News Image" class="news-image">
+                <div class="news-content">
+                    <h3 class="news-title">Breaking News: Major Earthquake Hits the West Coast</h3>
+                    <p class="news-description">A powerful earthquake struck the West Coast earlier today, causing
+                        widespread damage and disrupting power and transportation services.</p>
+                    <a href="#" class="news-link">Read More</a>
+                </div>
+            </div>
+            <div class="news-card">
+                <img src="https://loremflickr.com/400/400/sports" alt="News Image" class="news-image">
+                <div class="news-content">
+                    <h3 class="news-title">Local Team Wins Championship in Dramatic Fashion</h3>
+                    <p class="news-description">After a hard-fought season, the local team has emerged victorious,
+                        winning the championship title in a nail-biting final game.</p>
+                    <a href="#" class="news-link">Read More</a>
+                </div>
+            </div>
+            <div class="news-card">
+                <img src="https://loremflickr.com/400/400/entertainment" alt="News Image" class="news-image">
+                <div class="news-content">
+                    <h3 class="news-title">Celebrity Couple Announces Surprise Pregnancy</h3>
+                    <p class="news-description">The power couple has delighted fans with the news of their unexpected
+                        pregnancy, sparking excitement and speculation.</p>
+                    <a href="#" class="news-link">Read More</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Weather Section -->
+    <div class="weather-section">
+        <div class="weather-container">
+            <div class="flex items-center">
+                <div id="weather-icon" class="mr-4">
+                    <!-- 날씨 아이콘 -->
+                    <img th:src="'https://openweathermap.org/img/wn/' + ${weatherData.iconCode} + '@2x.png'"
+                        alt="Weather Icon" />
+                </div>
+                <div>
+                    <h2 class="text-xl font-bold mb-4">
+                        <span th:text="${weatherData.location}"></span>의 현재 날씨
+                    </h2>
+                    <p class="text-lg">날씨: <span th:text="${weatherData.description}"></span></p>
+                    <p class="text-lg">온도: <span th:text="${weatherData.temperature}"></span>°C</p>
+                    <p class="text-lg">습도: <span th:text="${weatherData.humidity}"></span>%</p>
+                    <p class="text-lg">풍속: <span th:text="${weatherData.windSpeed}"></span> m/s</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Community Section -->
+    <div class="community-section">
+        <h2>Community Discussions</h2>
+        <div class="community-container">
+            <div class="community-card">
+                <img src="https://loremflickr.com/400/400/people" alt="Community Image" class="community-image">
+                <div class="community-content">
+                    <h3 class="community-title">New Hiking Trail Opening Soon</h3>
+                    <p class="community-description">Join the discussion about the upcoming opening of a brand-new
+                        hiking trail in the local area, perfect for outdoor enthusiasts.</p>
+                    <a href="#" class="community-link">Join Discussion</a>
+                </div>
+            </div>
+            <div class="community-card">
+                <img src="https://loremflickr.com/400/400/food" alt="Community Image" class="community-image">
+                <div class="community-content">
+                    <h3 class="community-title">Best Local Restaurants to Try</h3>
+                    <p class="community-description">Share your favorite dining spots and get recommendations from the
+                        community on the must-try restaurants in the area.</p>
+                    <a href="#" class="community-link">Join Discussion</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="js/menu.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caver</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64," />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="https://kit.fontawesome.com/your-font-awesome-kit.js" crossorigin="anonymous"></script>
+</head>
+
+<body class="font-['Newsreader','Noto Sans',sans-serif] bg-slate-50 min-h-screen flex flex-col">
+    <!-- Navigation Bar -->
+    <div class="flex flex-col h-full">
+        <header class="flex items-center justify-between border-b border-slate-200 px-10 py-3">
+            <div class="flex items-center gap-4 text-slate-800">
+                <div class="w-4 h-4">
+                    <svg viewBox="0 0 48 48" fill="currentColor">
+                        <path d="M44 4H30.6666V17.3334H17.3334V30.6666H4V44H44V4Z" />
+                    </svg>
+                </div>
+                <a href="/" class="text-lg font-bold tracking-tight">Caver</a>
+            </div>
+            <nav class="flex gap-8 ml-auto">
+                <a class="text-sm font-medium text-slate-800" href="/news">뉴스</a>
+                <a class="text-sm font-medium text-slate-800" href="/weather">날씨</a>
+                <a class="text-sm font-medium text-slate-800" href="/stock">증권</a>
+                <a class="text-sm font-medium text-slate-800" href="/community">게시판</a>
+            </nav>
+            <div class="flex items-center gap-2 ml-4">
+                <button class="btn-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                        viewBox="0 0 256 256">
+                        <path
+                            d="M224,128a8,8,0,0,1-8,8H40a8,8,0,0,1,0-16H216A8,8,0,0,1,224,128ZM40,72H216a8,8,0,0,0,0-16H40a8,8,0,0,0,0,16ZM216,184H40a8,8,0,0,0,0,16H216a8,8,0,0,0,0-16Z" />
+                    </svg>
+                </button>
+            </div>
+        </header>
+    </div>
+
+    <!-- News Section -->
+    <section class="px-10 py-6">
+
+        <!-- 최신 뉴스 제목 -->
+        <h1 class="text-xl font-bold mb-4"
+            th:text="${selectedCategory != null} ? ${selectedCategory} + ' 뉴스' : '최신 뉴스'"></h1>
+
+        <!-- 최신 뉴스 또는 선택된 카테고리의 뉴스 출력 -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+            <!-- 뉴스 데이터를 반복하여 출력 -->
+            <div th:each="article : ${newsData}" class="bg-white shadow-md rounded-lg overflow-hidden">
+                <!-- 뉴스 이미지 -->
+                <img th:src="${article.urlToImage}" alt="뉴스 이미지" class="w-full h-48 object-cover">
+
+                <!-- 뉴스 콘텐츠 -->
+                <div class="p-4">
+                    <!-- 뉴스 제목 -->
+                    <h2 th:text="${article.title}" class="text-lg font-semibold mb-2"></h2>
+
+                    <!-- 출처 -->
+                    <p class="text-sm text-gray-500 mb-4">출처:
+                        <span th:text="${article.sourceName}"></span>
+                    </p>
+
+                    <!-- 기사 링크 -->
+                    <a th:href="${article.url}" target="_blank" class="text-blue-500 hover:underline">기사 읽기</a>
+                </div>
+            </div>
+        </div>
+
+
+
+        <!-- 카테고리 버튼들 추가 -->
+        <div class="mb-6 flex justify-center space-x-4">
+            <!-- 카테고리 버튼들 -->
+            <a href="/news/business" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">경제</a>
+
+            <a href="/news/entertainment"
+                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">연예</a>
+
+            <a href="/news/general" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">종합</a>
+
+            <a href="/news/health" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">건강</a>
+
+            <a href="/news/science" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">과학</a>
+
+            <a href="/news/sports" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">스포츠</a>
+
+            <a href="/news/technology"
+                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">테크</a>
+        </div>
+
+        <!-- 페이징 처리 -->
+        <div class="flex justify-center mt-6">
+            <!-- 이전 페이지 링크 -->
+            <a th:if="${currentPage > 1}" 
+               th:href="'/news' + (${selectedCategory != null and !#strings.isEmpty(selectedCategory) ? '/' + selectedCategory : ''}) + '?page=' + (${currentPage} - 1)"
+               class="px-4 py-2 bg-gray-300 rounded-lg mr-2">이전</a>
+        
+            <!-- 다음 페이지 링크 -->
+            <a th:href="'/news' + (${selectedCategory != null and !#strings.isEmpty(selectedCategory) ? '/' + selectedCategory : ''}) + '?page=' + (${currentPage} + 1)"
+               class="px-4 py-2 bg-gray-300 rounded-lg ml-2">다음</a>
+        </div>
+    </section>
+</body>
+
+</html>

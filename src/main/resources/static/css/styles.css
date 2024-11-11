@@ -1,0 +1,276 @@
+/* Global Styles */
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
+    color: #333;
+}
+
+/* Navigation Bar */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px;
+    background-color: #333;
+    color: white;
+}
+
+.navbar a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+}
+
+.navbar .navbar-links {
+    display: flex;
+    gap: 15px;
+}
+
+.navbar .navbar-links a:hover {
+    background-color: #575757;
+}
+
+/* Section Styles */
+.news-section,
+.community-section {
+    padding: 20px;
+    margin: 20px;
+    background-color: white;
+    border-radius: 8px;
+}
+
+.news-container,
+.community-container {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center; /* Add this line for centering */
+}
+
+.weather-section {
+    padding: 20px;
+    margin: 20px;
+    background-color: white;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+}
+
+.weather-container {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center; /* Add this line for centering */
+}
+
+/* News Cards */
+.news-card,
+.community-card {
+    background-color: #f8f8f8;
+    border-radius: 8px;
+    width: 30%; /* Adjust width for better card size */
+    padding: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center content inside card */
+    text-align: center;
+}
+
+.news-card img,
+.community-card img {
+    width: 100%;
+    height: 200px; /* Fixed height to avoid stretching */
+    object-fit: cover; /* Ensure the image fits properly */
+    border-radius: 8px;
+}
+
+.news-title,
+.community-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.news-description,
+.community-description {
+    font-size: 14px;
+    color: #777;
+    margin-top: 10px;
+}
+
+.news-link,
+.community-link {
+    font-size: 14px;
+    color: #0066cc;
+    text-decoration: none;
+}
+
+.news-link:hover,
+.community-link:hover {
+    text-decoration: underline;
+}
+
+/* Weather Styles */
+.weather-section {
+    display: flex;
+    justify-content: center; /* Center content in the weather section */
+    align-items: center;
+}
+
+.weather-container {
+    display: flex;
+    gap: 20px;
+    flex-direction: column;
+    align-items: center; /* Center the weather content */
+}
+
+.weather-icon {
+    font-size: 48px;
+    color: #0066cc;
+}
+
+.weather-info {
+    font-size: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    text-align: center; /* Center text for weather details */
+}
+
+.weather-details {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+.weather-forecast {
+    display: flex;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.weather-forecast-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 14px;
+}
+
+.forecast-day {
+    font-weight: bold;
+}
+
+/* Forecast Card Styles */
+.forecast-card {
+    background-color: #1c3e5e70; /* 어두운 배경색으로 변경 */
+    color: white; /* 텍스트 색상을 흰색으로 변경 */
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.forecast-card img {
+    /* filter 속성 제거 */
+    width: 100px; /* 아이콘 크기를 적절하게 조정 */
+    height: auto;
+}
+
+.forecast-card p {
+    color: black; /* 텍스트 색상을 흰색으로 변경 */
+}
+
+/* Community Section */
+.community-section {
+    margin-top: 30px;
+}
+
+.community-link {
+    color: #0066cc;
+}
+
+/* 검색 폼 스타일 */
+.search-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px auto;
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .search-input {
+    width: 300px;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+  }
+  
+  .search-button {
+    padding: 10px 20px;
+    margin-left: 10px;
+    background-color: #0066cc;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .search-button:hover {
+    background-color: #004c99;
+  }
+
+/* 숨겨진 메뉴 기본 설정 */
+.hidden-menu {
+    display: none;
+    position: absolute;
+    top: 60px; /* 헤더 높이에 맞게 조정 */
+    right: 10px;
+    background-color: white;
+    border-radius: 8px; /* 둥근 모서리 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 그림자 효과 */
+    transition: all 0.3s ease; /* 부드러운 전환 효과 */
+    z-index: 100;
+    opacity: 0; /* 처음에 메뉴가 보이지 않도록 설정 */
+    transform: translateY(-10px); /* 살짝 위로 이동한 상태에서 시작 */
+}
+
+/* 메뉴가 열릴 때의 스타일 */
+.show-menu {
+    display: block;
+    opacity: 1; /* 메뉴가 완전히 보이도록 설정 */
+    transform: translateY(0); /* 원래 위치로 이동 */
+}
+
+/* 메뉴 리스트 스타일 */
+.hidden-menu ul {
+    list-style-type: none;
+    padding: 10px;
+    margin: 0;
+}
+
+/* 각 메뉴 항목의 간격과 스타일 */
+.hidden-menu ul li {
+    margin: 8px 0;
+}
+
+/* 링크 스타일 */
+.hidden-menu ul li a {
+    text-decoration: none;
+    color: #333; /* 글자 색상 */
+    padding: 10px 15px;
+    border-radius: 5px; /* 둥근 버튼 느낌 */
+    background-color: #f0f0f0; /* 기본 배경 색상 */
+    transition: background-color 0.3s ease; /* 배경색 전환 효과 */
+}
+
+/* 링크에 마우스를 올렸을 때의 효과 */
+.hidden-menu ul li a:hover {
+    background-color: #e0e0e0; /* 호버 시 배경색 변경 */
+}
