@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Caver</title>
     <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="/css/styles.css">
     <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64," />
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <!-- Load Font Awesome Icons -->
@@ -51,6 +51,14 @@
         </header>
     </div>
 
+    <script src="/js/weatherError.js"></script>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has('error') && urlParams.get('error') === 'true') {
+            showErrorAlert("도시를 다시 검색해주세요");
+        }
+    </script>
+
     <!-- Search Form -->
     <div class="p-4">
         <form action="/weather" method="GET" class="search-form">
@@ -77,8 +85,8 @@
 
     <!-- 5-Day Forecast Section -->
     <section class="forecast-section p-6 mt-8">
-        <h2 class="text-xl font-bold mb-4">5일 일기예보</h2>
-        <div class="forecast-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+        <h2 class="text-xl font-bold mb-4">일기예보</h2>
+        <div class="forecast-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <div th:each="forecast : ${forecastData}" class="forecast-card bg-slate-100 p-4 rounded-lg text-center">
                 <p class="text-sm font-medium" th:text="${forecast.dateTime}"></p>
                 <img th:src="'http://openweathermap.org/img/wn/' + ${forecast.iconCode} + '@2x.png'" alt="Forecast Icon" class="mx-auto my-2"/>
@@ -88,8 +96,5 @@
             </div>
         </div>
     </section>
-
-    <!-- Error Message Script -->
-    <script src="js/weather.js"></script>
 </body>
 </html>
