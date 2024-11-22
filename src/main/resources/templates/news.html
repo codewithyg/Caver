@@ -47,14 +47,14 @@
 
         <!-- 최신 뉴스 제목 -->
         <h1 class="text-xl font-bold mb-4"
-            th:text="${selectedCategory != null} ? ${selectedCategory} + ' 뉴스' : '최신 뉴스'"></h1>
+            th:text="${selectedCategory != null} ? ${selectedCategory} + ' 최신 헤드라인' : '최신 헤드라인'"></h1>
 
         <!-- 최신 뉴스 또는 선택된 카테고리의 뉴스 출력 -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
             <!-- 뉴스 데이터를 반복하여 출력 -->
             <div th:each="article : ${newsData}" class="bg-white shadow-md rounded-lg overflow-hidden">
                 <!-- 뉴스 이미지 -->
-                <img th:src="${article.urlToImage}" alt="뉴스 이미지" class="w-full h-48 object-cover">
+                <img th:src="${article.urlToImage}" alt="뉴스 이미지" onerror="this.onerror=null; this.src='/img/no-image-icon.png';" class="w-full h-48 object-cover" >
 
                 <!-- 뉴스 콘텐츠 -->
                 <div class="p-4">
@@ -67,7 +67,7 @@
                     </p>
 
                     <!-- 기사 링크 -->
-                    <a th:href="${article.url}" target="_blank" class="text-blue-500 hover:underline">기사 읽기</a>
+                    <a th:href="${article.url}" target="_blank" class="text-base font-semibold text-blue-500 hover:underline">기사 읽기</a>
                 </div>
             </div>
         </div>
@@ -77,33 +77,34 @@
         <!-- 카테고리 버튼들 추가 -->
         <div class="mb-6 flex justify-center space-x-4">
             <!-- 카테고리 버튼들 -->
-            <a href="/news/business" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">경제</a>
-
-            <a href="/news/entertainment"
-                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">연예</a>
-
             <a href="/news/general" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">종합</a>
-
+            <a href="/news/business" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">경제</a>
+            <a href="/news/entertainment" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">연예</a>
             <a href="/news/health" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">건강</a>
-
             <a href="/news/science" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">과학</a>
-
             <a href="/news/sports" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">스포츠</a>
-
-            <a href="/news/technology"
-                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">테크</a>
+            <a href="/news/technology" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">테크</a>
         </div>
 
         <!-- 페이징 처리 -->
-        <div class="flex justify-center mt-6">
-            <!-- 이전 페이지 링크 -->
-            <a th:if="${currentPage > 1}" 
-               th:href="'/news' + (${selectedCategory != null and !#strings.isEmpty(selectedCategory) ? '/' + selectedCategory : ''}) + '?page=' + (${currentPage} - 1)"
-               class="px-4 py-2 bg-gray-300 rounded-lg mr-2">이전</a>
+        <div class="flex justify-center mt-6 space-x-2">
+            <!-- 이전 그룹 -->
+            <a th:if="${startPage > 1}"
+               th:href="'/news' + (${selectedCategory != null and !#strings.isEmpty(selectedCategory) ? '/' + selectedCategory : ''}) + '?page=' + (${startPage} - 5)"
+               class="px-4 py-2 bg-gray-300 rounded-lg">이전</a>
         
-            <!-- 다음 페이지 링크 -->
-            <a th:href="'/news' + (${selectedCategory != null and !#strings.isEmpty(selectedCategory) ? '/' + selectedCategory : ''}) + '?page=' + (${currentPage} + 1)"
-               class="px-4 py-2 bg-gray-300 rounded-lg ml-2">다음</a>
+            <!-- 페이지 번호 -->
+            <a th:each="page : ${#numbers.sequence(startPage, endPage)}"
+               th:classappend="${page == currentPage} ? 'bg-blue-500 text-white' : 'bg-gray-300'"
+               th:href="'/news' + (${selectedCategory != null and !#strings.isEmpty(selectedCategory) ? '/' + selectedCategory : ''}) + '?page=' + ${page}"
+               class="px-3 py-2 rounded-lg hover:bg-blue-700 hover:text-white cursor-pointer"
+               th:text="${page}">
+            </a>
+        
+            <!-- 다음 그룹 -->
+            <a th:if="${endPage < totalPages}"
+               th:href="'/news' + (${selectedCategory != null and !#strings.isEmpty(selectedCategory) ? '/' + selectedCategory : ''}) + '?page=' + (${endPage} + 1)"
+               class="px-4 py-2 bg-gray-300 rounded-lg">다음</a>
         </div>
     </section>
 </body>

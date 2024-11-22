@@ -69,4 +69,22 @@ public class NewsService {
 
         return newsList; // 선택된 카테고리 뉴스 목록 반환
     }
+
+    public int getTotalArticles() {
+        RestTemplate restTemplate = new RestTemplate();
+        String urlWithApiKey = "https://newsapi.org/v2/top-headlines?country=us&apiKey=" + apiKey;
+        String response = restTemplate.getForObject(urlWithApiKey, String.class);
+
+        JSONObject jsonResponse = new JSONObject(response);
+        return jsonResponse.getInt("totalResults"); // 총 결과 수
+    }
+
+    public int getTotalArticlesByCategory(String category) {
+        RestTemplate restTemplate = new RestTemplate();
+        String urlWithCategory = "https://newsapi.org/v2/top-headlines?country=us&category=" + category + "&apiKey=" + apiKey;
+        String response = restTemplate.getForObject(urlWithCategory, String.class);
+
+        JSONObject jsonResponse = new JSONObject(response);
+        return jsonResponse.getInt("totalResults");
+    }
 }

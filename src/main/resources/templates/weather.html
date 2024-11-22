@@ -59,7 +59,7 @@
         }
     </script>
 
-    <!-- Search Form -->
+    <!-- Weather Search Form -->
     <div class="p-4">
         <form action="/weather" method="GET" class="search-form">
             <input type="text" name="city" placeholder="도시 이름을 입력하세요" class="search-input" required>
@@ -67,32 +67,34 @@
         </form>
     </div>
 
-    <!-- Weather Section -->
+    <!-- Weather Result Section -->
     <section class="weather-section p-6">
         <div class="flex items-center">
             <div id="weather-icon" class="mr-4">
                 <img th:src="'https://openweathermap.org/img/wn/' + ${weatherData?.iconCode} + '@2x.png'" alt="Weather Icon"/>
             </div>
             <div>
-                <h2 class="text-xl font-bold mb-4"><span th:text="${weatherData.location}"></span>의 현재 날씨</h2>
-                <p class="text-lg">날씨: <span th:text="${weatherData.description}"></span></p>
-                <p class="text-lg">온도: <span th:text="${weatherData.temperature}"></span>°C</p>
-                <p class="text-lg">습도: <span th:text="${weatherData.humidity}"></span>%</p>
-                <p class="text-lg">풍속: <span th:text="${weatherData.windSpeed}"></span> m/s</p>
+                <h2 class="text-2xl font-bold mb-4"><span th:text="${weatherData.location}"></span>의 현재 날씨</h2>
+                <p class="text-base font-semibold">날씨: <span th:text="${weatherData.description}"></span></p>
+                <p class="text-base font-semibold">온도: <span th:text="${weatherData.temperature}"></span>°C</p>
+                <p class="text-base font-semibold">습도: <span th:text="${weatherData.humidity}"></span>%</p>
+                <p class="text-base font-semibold">풍속: <span th:text="${weatherData.windSpeed}"></span> m/s</p>
+                <p class="text-base font-semibold">체감 온도: <span th:text="${weatherData.feelsLike}"></span> °C</p>
             </div>
         </div>
     </section>
 
-    <!-- 5-Day Forecast Section -->
+    <!-- Forecast Result Section -->
     <section class="forecast-section p-6 mt-8">
         <h2 class="text-xl font-bold mb-4">일기예보</h2>
         <div class="forecast-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <div th:each="forecast : ${forecastData}" class="forecast-card bg-slate-100 p-4 rounded-lg text-center">
-                <p class="text-sm font-medium" th:text="${forecast.dateTime}"></p>
+                <p class="text-lg font-semibold" th:text="${forecast.dateTime}"></p>
                 <img th:src="'http://openweathermap.org/img/wn/' + ${forecast.iconCode} + '@2x.png'" alt="Forecast Icon" class="mx-auto my-2"/>
-                <p class="text-lg font-semibold" th:text="${forecast.temperature} + '°C'"></p>
-                <p class="text-sm" th:text="'습도: ' + ${forecast.humidity} + '%'"></p>
-                <p class="text-sm" th:text="'날씨: ' + ${forecast.description}"></p>
+                <p class="text-base font-semibold" th:text="'날씨: ' + ${forecast.description}"></p>
+                <p class="text-base font-semibold" th:text="'예상온도: ' + ${forecast.temperature} + '°C'"></p>
+                <p class="text-base font-semibold" th:text="'체감온도: ' + ${forecast.feelsLike} + '°C'"></p>
+                <p class="text-base font-semibold" th:text="'습도: ' + ${forecast.humidity} + '%'"></p>
             </div>
         </div>
     </section>

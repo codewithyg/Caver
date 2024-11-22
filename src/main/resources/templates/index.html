@@ -60,12 +60,15 @@
             </div>
         </header>
     </div>
+    
+    <!--
     <div>
         <form action="/search" method="GET" class="search-form">
             <input type="text" name="query" placeholder="검색어를 입력하세요" class="search-input" required>
             <button type="submit" class="search-button">검색</button>
         </form>
     </div>
+    -->
 
     <!-- News Section -->
     <div class="news-section">
@@ -101,7 +104,7 @@
         </div>
     </div>
 
-    <!-- Weather Section -->
+    <!-- Busan Weather Reslut Section -->
     <div class="weather-section">
         <div class="weather-container">
             <div class="flex items-center">
@@ -111,13 +114,14 @@
                         alt="Weather Icon" />
                 </div>
                 <div>
-                    <h2 class="text-xl font-bold mb-4">
+                    <h2 class="text-2xl font-bold mb-4">
                         <span th:text="${weatherData.location}"></span>의 현재 날씨
                     </h2>
-                    <p class="text-lg">날씨: <span th:text="${weatherData.description}"></span></p>
-                    <p class="text-lg">온도: <span th:text="${weatherData.temperature}"></span>°C</p>
-                    <p class="text-lg">습도: <span th:text="${weatherData.humidity}"></span>%</p>
-                    <p class="text-lg">풍속: <span th:text="${weatherData.windSpeed}"></span> m/s</p>
+                    <p class="text-base font-semibold">날씨: <span th:text="${weatherData.description}"></span></p>
+                    <p class="text-base font-semibold">온도: <span th:text="${weatherData.temperature}"></span>°C</p>
+                    <p class="text-base font-semibold">체감 온도: <span th:text="${weatherData.feelsLike}"></span> °C</p>
+                    <p class="text-base font-semibold">습도: <span th:text="${weatherData.humidity}"></span>%</p>
+                    <p class="text-base font-semibold">풍속: <span th:text="${weatherData.windSpeed}"></span> m/s</p>
                 </div>
             </div>
         </div>

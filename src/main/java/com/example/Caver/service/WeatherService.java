@@ -22,7 +22,7 @@ public class WeatherService {
     private final String CURRENT_WEATHER_API_URL  = "https://api.openweathermap.org/data/2.5/weather?q=";
     private String FORECAST_API_URL = "https://api.openweathermap.org/data/2.5/forecast?";
 
-    // 도시 이름을 인코딩하는 헬퍼 메서드 추가
+    // 도시 이름을 인코딩
     private String encodeCityName(String cityName) {
         return cityName.replace(" ", "+");
     }
@@ -49,6 +49,7 @@ public class WeatherService {
                 weatherData.setHumidity((Integer) main.get("humidity"));
                 weatherData.setTempMin((Double) main.get("temp_min"));
                 weatherData.setTempMax((Double) main.get("temp_max"));
+                weatherData.setFeelsLike((Double) main.get("feels_like"));
             }
 
             Map<String, Object> wind = (Map<String, Object>) response.get("wind");
@@ -68,6 +69,7 @@ public class WeatherService {
         String url = UriComponentsBuilder.fromHttpUrl(FORECAST_API_URL)
                 .queryParam("q", encodedCityName)
                 .queryParam("cnt", 40)
+                .queryParam("lang", "kr")
                 .queryParam("appid", apiKey)
                 .queryParam("units", "metric")
                 .toUriString();
@@ -92,6 +94,8 @@ public class WeatherService {
                         forecast.setTemperature(((Number) mainData.get("temp")).doubleValue());
                         forecast.setTempMin(((Number) mainData.get("temp_min")).doubleValue());
                         forecast.setTempMax(((Number) mainData.get("temp_max")).doubleValue());
+                        forecast.setFeelsLike(((Number) mainData.get("feels_like")).doubleValue());
+                        forecast.setHumidity(((Number) mainData.get("humidity")).intValue());
                         forecast.setHumidity(((Number) mainData.get("humidity")).intValue());
                     }
 
