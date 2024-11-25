@@ -16,39 +16,48 @@
 <body class="font-['Newsreader','Noto Sans',sans-serif] bg-slate-50 min-h-screen flex flex-col">
     <!-- Navigation Bar -->
     <div class="flex flex-col h-full">
-        <header class="flex items-center justify-between border-b border-slate-200 px-10 py-3">
+        <header class="flex items-center justify-between border-b border-slate-200 px-4 py-3">
             <div class="flex items-center gap-4 text-slate-800">
-                <div class="w-4 h-4">
-                    <svg viewBox="0 0 48 48" fill="currentColor">
-                        <path d="M44 4H30.6666V17.3334H17.3334V30.6666H4V44H44V4Z" />
-                    </svg>
+                <div class="w-10 h-10">
+                    <a href="/">
+                        <img src="/img/Caver.jpg" alt="Logo" class="w-full h-full object-contain">
+                    </a>
                 </div>
-                <a href="/" class="text-lg font-bold tracking-tight">Caver</a>
+                <a href="/" class="text-xl font-bold tracking-tight">Caver</a>
             </div>
-            <nav class="flex gap-8 ml-auto">
-                <!-- Dropdown for News -->
-                <div class="dropdown">
-                    <a class="text-sm font-medium text-slate-800 cursor-pointer">뉴스</a>
-                    <div class="dropdown-content">
-                        <a href="/news">전체뉴스</a>
-                        <a href="/news/head">헤드라인</a>
-                    </div>
-                </div>
-                <!-- Other navigation links -->
-                <a class="text-sm font-medium text-slate-800" href="/weather">날씨</a>
-                <a class="text-sm font-medium text-slate-800" href="/stock">증권</a>
-                <a class="text-sm font-medium text-slate-800" href="/community">게시판</a>
-            </nav>
-            <div class="flex items-center gap-2 ml-4">
-                <button class="btn-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
-                        viewBox="0 0 256 256">
-                        <path
-                            d="M224,128a8,8,0,0,1-8,8H40a8,8,0,0,1,0-16H216A8,8,0,0,1,224,128ZM40,72H216a8,8,0,0,0,0-16H40a8,8,0,0,0,0,16ZM216,184H40a8,8,0,0,0,0,16H216a8,8,0,0,0,0-16Z" />
-                    </svg>
-                </button>
-            </div>
+            <!-- Hamburger Menu Button -->
+            <button class="hamburger-btn text-slate-800 p-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                    viewBox="0 0 256 256">
+                    <path
+                        d="M224,128a8,8,0,0,1-8,8H40a8,8,0,0,1,0-16H216A8,8,0,0,1,224,128ZM40,72H216a8,8,0,0,0,0-16H40a8,8,0,0,0,0,16ZM216,184H40a8,8,0,0,0,0,16H216a8,8,0,0,0,0-16Z" />
+                </svg>
+            </button>
         </header>
+
+        <!-- Hamburger Menu -->
+        <nav class="hamburger-menu hidden fixed top-0 right-0 w-1/3 max-w-sm h-full bg-white shadow-lg p-6">
+            <!-- Close Button -->
+            <button class="close-btn hidden text-slate-800 absolute top-4 right-4">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                    viewBox="0 0 256 256">
+                    <path
+                        d="M208.49,191.51a8,8,0,0,1-11.32,11.32L128,133.32,58.83,202.49a8,8,0,0,1-11.32-11.32L116.68,128,47.51,58.83a8,8,0,0,1,11.32-11.32L128,122.68l69.17-69.17a8,8,0,0,1,11.32,11.32L139.32,128Z" />
+                </svg>
+            </button>
+            <ul class="flex flex-col gap-4">
+                <li>
+                    <a href="#" class="text-lg font-medium toggle-news">뉴스</a>
+                    <ul class="news-submenu hidden ml-4 mt-2">
+                        <li><a href="/news" class="text-sm text-gray-600">전체뉴스</a></li>
+                        <li><a href="/news/head" class="text-sm text-gray-600">헤드라인</a></li>
+                    </ul>
+                </li>
+                <li><a href="/weather" class="text-lg font-medium">날씨</a></li>
+                <li><a href="/stock" class="text-lg font-medium">증권</a></li>
+                <li><a href="/community" class="text-lg font-medium">게시판</a></li>
+            </ul>
+        </nav>
     </div>
 
     <script src="/js/weatherError.js"></script>
@@ -88,7 +97,7 @@
     <!-- Forecast Result Section -->
     <section class="forecast-section p-6 mt-8">
         <h2 class="text-xl font-bold mb-4">일기예보</h2>
-        <div class="forecast-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="forecast-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
             <div th:each="forecast : ${forecastData}" class="forecast-card bg-slate-100 p-4 rounded-lg text-center">
                 <p class="text-lg font-semibold" th:text="${forecast.dateTime}"></p>
                 <div class="forecast-icon-container mx-auto my-2">
@@ -102,6 +111,8 @@
             </div>
         </div>
     </section>
+
+    <script src="/js/menu.js"></script>
 </body>
 
 </html>

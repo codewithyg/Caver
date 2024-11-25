@@ -38,6 +38,7 @@ body {
     margin: 20px;
     background-color: white;
     border-radius: 8px;
+    z-index: 5;
 }
 
 .news-container,
@@ -325,4 +326,50 @@ nav a {
 .weather-icon,
 .forecast-icon {
     border-radius: 50%; /* 아이콘 자체를 둥글게 */
+}
+
+.hamburger-menu {
+    right: 0; /* 오른쪽 정렬 */
+    width: 250px; /* 메뉴 폭 줄이기 */
+    height: 100%; /* 화면 전체 높이 */
+    text-align: center; /* 글자 가운데 정렬 */
+    background-color: #ffffff; /* 배경색 */
+    padding: 20px; /* 내부 여백 */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* 그림자 추가 */
+    font-weight: bold; /* 글자 bold 처리 */
+    z-index: 20;
+}
+
+.close-btn {
+    background: none; /* 배경 제거 */
+    border: none; /* 테두리 제거 */
+    cursor: pointer; /* 마우스 포인터 변경 */
+    z-index: 50; /* 닫기 버튼이 메뉴 위에 나타나도록 설정 */
+}
+
+.hamburger-menu ul {
+    list-style: none; /* 리스트 스타일 제거 */
+    padding: 0;
+}
+
+.hamburger-menu ul li {
+    margin-bottom: 20px; /* 리스트 간 간격 */
+    font-size: 18px; /* 글자 크기 조정 */
+}
+
+.hamburger-menu.hidden {
+    transform: translateX(100%); /* 화면에서 숨기기 */
+}
+
+.news-submenu.hidden {
+    display: none; /* 서브 메뉴 숨김 */
+}
+
+.news-submenu {
+    font-size: 14px; /* 글자 크기 조정 */
+}
+
+/* Close Button Styling */
+.close-btn.hidden {
+    display: none;
 }
