@@ -1,30 +1,49 @@
 package com.example.Caver.controller;
 
 import com.example.Caver.service.WeatherService;
+import com.example.Caver.service.NewsService;
+import com.example.Caver.service.StockService;
 import org.springframework.ui.Model;
 import com.example.Caver.model.Weather;
+import com.example.Caver.model.News;
+import com.example.Caver.model.Stock;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.beans.factory.annotation.Autowired;
+import java.util.*;
 
 @Controller
 public class HomeController {
     private final WeatherService weatherService;
+    private final NewsService newsService;
+    private final StockService stockService;
+    private final Random random = new Random();
 
-    // WeatherService 주입
-    public HomeController(WeatherService weatherService) {
+    @Autowired
+    public HomeController(NewsService newsService, WeatherService weatherService, StockService stockService) {
+        this.newsService = newsService;
         this.weatherService = weatherService;
+        this.stockService = stockService;
     }
 
     @GetMapping("/")
     public String home(Model model) {
-        String city = "Busan";  // 예시로 서울 날씨 정보를 가져옵니다.
+        String city = "Busan";
+        int page = random.nextInt(3) + 1;
 
-        // 날씨 데이터를 WeatherService를 통해 가져오기
+        // 날씨
         Weather weatherData = weatherService.getCurrentWeather(city);
-
-        // 날씨 데이터를 모델에 추가
         model.addAttribute("weatherData", weatherData);
+        
+        // 뉴스
+        List<News> newsData = newsService.getHeadLines(page);
+        List<News> top3News = newsData.subList(0, Math.min(newsData.size(), 3));
+        model.addAttribute("top3News", top3News);
 
-        return "index";  // "index.html"로 날씨 데이터 전달
+        // 주식
+        List<Stock> nasdaqStocks = stockService.getNasdaqStocks();
+        model.addAttribute("nasdaqStocks", nasdaqStocks);
+        
+        return "index"; 
     }
 }

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caver</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body class="font-['Newsreader','Noto Sans',sans-serif] bg-slate-50 min-h-screen flex flex-col">
+    <!-- Navigation Bar -->
+    <div class="flex flex-col h-full">
+        <header class="flex items-center justify-between border-b border-slate-200 px-10 py-3">
+            <div class="flex items-center gap-4 text-slate-800">
+                <div class="w-4 h-4">
+                    <svg viewBox="0 0 48 48" fill="currentColor">
+                        <path d="M44 4H30.6666V17.3334H17.3334V30.6666H4V44H44V4Z" />
+                    </svg>
+                </div>
+                <a href="/" class="text-lg font-bold tracking-tight">Caver</a>
+            </div>
+            <nav class="flex gap-8 ml-auto">
+                <!-- Dropdown for News -->
+                <div class="dropdown">
+                    <a class="text-sm font-medium text-slate-800 cursor-pointer">뉴스</a>
+                    <div class="dropdown-content">
+                        <a href="/news">전체뉴스</a>
+                        <a href="/news/head">헤드라인</a>
+                    </div>
+                </div>
+                <!-- Other navigation links -->
+                <a class="text-sm font-medium text-slate-800" href="/weather">날씨</a>
+                <a class="text-sm font-medium text-slate-800" href="/stock">증권</a>
+                <a class="text-sm font-medium text-slate-800" href="/community">게시판</a>
+            </nav>
+            <div class="flex items-center gap-2 ml-4">
+                <button class="btn-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                        viewBox="0 0 256 256">
+                        <path
+                            d="M224,128a8,8,0,0,1-8,8H40a8,8,0,0,1,0-16H216A8,8,0,0,1,224,128ZM40,72H216a8,8,0,0,0,0-16H40a8,8,0,0,0,0,16ZM216,184H40a8,8,0,0,0,0,16H216a8,8,0,0,0,0-16Z" />
+                    </svg>
+                </button>
+            </div>
+        </header>
+    </div>
+
+    <!-- Search Form -->
+    <div class="p-6">
+        <form action="/stock/search" method="GET" class="stock-search-form flex gap-4">
+            <input type="text" name="query" placeholder="Symbol을 입력하세요"
+                class="search-input flex-1 border border-gray-300 rounded px-4 py-2" required>
+            <button type="submit" class="search-button bg-blue-500 text-white px-4 py-2 rounded">검색</button>
+        </form>
+    </div>
+
+    <!-- Stock Description Section -->
+    <div class="p-6">
+        <h2 class="text-xl text-center font-bold mb-4">검색 결과</h2>
+        <div class="p-4 border rounded mb-4 text-center bg-gray-100">
+            <div th:if="${searchResults.isEmpty()}">
+                <p>검색 결과가 없습니다.</p>
+            </div>
+            <div th:each="stock : ${searchResults}">
+                <h3 class="text-lg font-semibold" th:text="${stock.name}"></h3>
+                <p th:text="'Symbol: ' + ${stock.symbol}"></p>
+                <p th:text="'Price: $' + ${stock.price}"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stock Chart Section -->
+    <div class="p-6">
+        <h2 class="text-xl text-center font-bold mb-4">차트</h2>
+        <div th:if="${chartData.isEmpty()}">
+            <p>차트 데이터를 불러올 수 없습니다.</p>
+        </div>
+        <div th:unless="${chartData.isEmpty()}">
+            <!-- Chart.js Canvas -->
+            <canvas id="stockChart" width="400" height="200"></canvas>
+
+            <!-- Chart.js Script -->
+            <script th:inline="javascript">
+                // Thymeleaf 데이터를 JavaScript로 변환
+                const chartData = /*[[${chartData}]]*/ [];
+                
+                // 날짜와 종가 데이터 추출
+                const labels = chartData.map(data => data.date);
+                const prices = chartData.map(data => data.close);
+
+                // Chart.js로 라인 차트 생성
+                const ctx = document.getElementById('stockChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: '주가 (종가)',
+                            data: prices,
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            x: {
+                                title: { display: true, text: '날짜' },
+                                reverse: true // x축 방향 반전
+                            },
+                            y: {
+                                title: { display: true, text: '가격 (USD)' }
+                            }
+                        }
+                    }
+                });
+            </script>
+        </div>
+    </div>
+
+</body>
+
+</html>

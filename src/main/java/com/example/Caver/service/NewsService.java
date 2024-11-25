@@ -15,8 +15,48 @@ public class NewsService {
     @Value("${news.api.key}")
     private String apiKey;
 
-    // 최신 뉴스를 가져오기 (페이징 포함)
-    public List<News> getLatestNews(int page) {
+    // 뉴스 받기
+    public List<News> getNews(String query, String sortBy, int page) {
+        RestTemplate restTemplate = new RestTemplate();
+        String url = "https://newsapi.org/v2/everything?q=" + query + 
+                     "&sortBy=" + sortBy + 
+                     "&pageSize=9&page=" + page + 
+                     "&apiKey=" + apiKey;
+        String response = restTemplate.getForObject(url, String.class);
+
+        // JSON 파싱
+        JSONObject jsonResponse = new JSONObject(response);
+        JSONArray articles = jsonResponse.getJSONArray("articles");
+
+        // JSON 데이터를 News 객체로 변환
+        List<News> newsList = new ArrayList<>();
+        for (int i = 0; i < articles.length(); i++) {
+            JSONObject article = articles.getJSONObject(i);
+            News newsArticle = new News(
+                article.getString("title"),
+                article.optString("urlToImage", "default-image-url"),
+                article.getString("url"),
+                article.getJSONObject("source").getString("name")
+            );
+            newsList.add(newsArticle);
+        }
+
+        return newsList;
+    }
+
+    // 뉴스 결과 수
+    public int getTotalNews(String query) {
+        RestTemplate restTemplate = new RestTemplate();
+        String url = "https://newsapi.org/v2/everything?q=" + query + "&apiKey=" + apiKey;
+        String response = restTemplate.getForObject(url, String.class);
+
+        JSONObject jsonResponse = new JSONObject(response);
+        return jsonResponse.getInt("totalResults");
+    }
+
+
+    // 최신 헤드라인 받기
+    public List<News> getHeadLines(int page) {
         RestTemplate restTemplate = new RestTemplate();
         String urlWithApiKeyAndPage = "https://newsapi.org/v2/top-headlines?country=us&pageSize=9&apiKey=" + apiKey + "&page=" + page;
         String response = restTemplate.getForObject(urlWithApiKeyAndPage, String.class);
@@ -38,14 +78,25 @@ public class NewsService {
             newsList.add(newsArticle);
         }
 
-        // 뉴스 목록을 무작위로 섞음 (랜덤화)
+        // 새로고침 시 헤드라인 섞기
         Collections.shuffle(newsList);
 
-        return newsList; // 뉴스 목록 반환
+        // 최신 헤드라인 목록 반환
+        return newsList; 
     }
 
-    // 카테고리별 뉴스 가져오기 (페이징 처리 포함)
-    public List<News> getNewsByCategory(String category, int page) {
+    // 최신 헤드라인 결과 수
+    public int getTotalHeadLines() {
+        RestTemplate restTemplate = new RestTemplate();
+        String urlWithApiKey = "https://newsapi.org/v2/top-headlines?country=us&apiKey=" + apiKey;
+        String response = restTemplate.getForObject(urlWithApiKey, String.class);
+
+        JSONObject jsonResponse = new JSONObject(response);
+        return jsonResponse.getInt("totalResults"); // 총 결과 수
+    }
+
+    // 카테고리별 헤드라인 받기
+    public List<News> getHeadLinesByCategory(String category, int page) {
         RestTemplate restTemplate = new RestTemplate();
         String urlWithCategoryAndPage = "https://newsapi.org/v2/top-headlines?country=us&category=" + category + "&pageSize=9&page=" + page + "&apiKey=" + apiKey;
         String response = restTemplate.getForObject(urlWithCategoryAndPage, String.class);
@@ -66,20 +117,13 @@ public class NewsService {
             );
             newsList.add(newsArticle);
         }
-
-        return newsList; // 선택된 카테고리 뉴스 목록 반환
+        
+        // 카테고리별 헤드라인 목록 반환
+        return newsList;
     }
 
-    public int getTotalArticles() {
-        RestTemplate restTemplate = new RestTemplate();
-        String urlWithApiKey = "https://newsapi.org/v2/top-headlines?country=us&apiKey=" + apiKey;
-        String response = restTemplate.getForObject(urlWithApiKey, String.class);
-
-        JSONObject jsonResponse = new JSONObject(response);
-        return jsonResponse.getInt("totalResults"); // 총 결과 수
-    }
-
-    public int getTotalArticlesByCategory(String category) {
+    // 카테고리별 헤드라인 결과 수
+    public int getTotalHeadLinesByCategory(String category) {
         RestTemplate restTemplate = new RestTemplate();
         String urlWithCategory = "https://newsapi.org/v2/top-headlines?country=us&category=" + category + "&apiKey=" + apiKey;
         String response = restTemplate.getForObject(urlWithCategory, String.class);

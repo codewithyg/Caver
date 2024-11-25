@@ -6,10 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Caver</title>
     <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="/css/styles.css">
     <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64," />
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <!-- Load Font Awesome Icons -->
     <script src="https://kit.fontawesome.com/your-font-awesome-kit.js" crossorigin="anonymous"></script>
 </head>
 
@@ -26,19 +25,20 @@
                 <a href="/" class="text-lg font-bold tracking-tight">Caver</a>
             </div>
             <nav class="flex gap-8 ml-auto">
-                <a class="text-sm font-medium text-slate-800" href="/news">뉴스</a>
+                <!-- Dropdown for News -->
+                <div class="dropdown">
+                    <a class="text-sm font-medium text-slate-800 cursor-pointer">뉴스</a>
+                    <div class="dropdown-content">
+                        <a href="/news">전체뉴스</a>
+                        <a href="/news/head">헤드라인</a>
+                    </div>
+                </div>
+                <!-- Other navigation links -->
                 <a class="text-sm font-medium text-slate-800" href="/weather">날씨</a>
                 <a class="text-sm font-medium text-slate-800" href="/stock">증권</a>
                 <a class="text-sm font-medium text-slate-800" href="/community">게시판</a>
             </nav>
             <div class="flex items-center gap-2 ml-4">
-                <button class="btn-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
-                        viewBox="0 0 256 256">
-                        <path
-                            d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24ZM74.08,197.5a64,64,0,0,1,107.84,0,87.83,87.83,0,0,1-107.84,0ZM96,120a32,32,0,1,1,32,32A32,32,0,0,1,96,120Zm97.76,66.41a79.66,79.66,0,0,0-36.06-28.75,48,48,0,1,0-59.4,0,79.66,79.66,0,0,0-36.06,28.75,88,88,0,1,1,131.52,0Z" />
-                    </svg>
-                </button>
                 <button class="btn-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                         viewBox="0 0 256 256">
@@ -49,26 +49,61 @@
             </div>
         </header>
     </div>
-    <div>
-        <form action="/search" method="GET" class="search-form">
-            <input type="text" name="query" placeholder="검색어를 입력하세요" class="search-input" required>
-            <button type="submit" class="search-button">검색</button>
+
+    <!-- Search Form -->
+    <div class="p-6">
+        <form action="/stock/search" method="GET" class="stock-search-form text-center flex gap-4">
+            <input type="text" name="query" placeholder="Symbol을 입력해주세요."
+                class="search-input flex-1 border border-gray-300 rounded px-4 py-2" required>
+            <button type="submit" class="search-button bg-blue-500 text-white px-4 py-2 rounded">검색</button>
         </form>
     </div>
 
-    <!-- stock info -->
-    <div class="stock-section">
-        <h2 class="text-xl font-bold mb-4">Stock Information</h2>
-        <div class="stock-container">
-            <div th:each="stock : ${stockData}" class="stock-card">
-                <h3 class="stock-symbol" th:text="${stock.symbol}"></h3>
-                <p class="stock-price" th:text="'Price: $' + ${stock.price}"></p>
-                <p class="stock-change" th:classappend="${stock.change > 0 ? 'text-green-500' : 'text-red-500'}"
-                    th:text="${stock.change > 0 ? '+' : ''} + ${stock.change} + '%'"></p>
+    <!-- Stock Sections -->
+    <div class="grid grid-cols-2 gap-6 p-6">
+        <!-- NASDAQ Section -->
+        <div>
+            <h2 class="text-xl text-center font-bold mb-4">NASDAQ 주식</h2>
+            <div class="p-4 border rounded mb-4 text-center"
+                style="max-height: 400px; overflow-y: auto; background-color: #f9fafb;">
+                <div th:each="stock : ${nasdaqStocks}">
+                    <div class="mb-4 p-4 border-b border-slate-300">
+                        <h3 class="text-lg font-semibold" th:text="${stock.name}"></h3>
+                        <p th:text="'Symbol: ' + ${stock.symbol}"></p>
+                        <!--<p th:text="'Price: $' + ${stock.price}"></p>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DOWJONES Section -->
+        <div>
+            <h2 class="text-xl text-center font-bold mb-4">DOWJONES 주식</h2>
+            <div class="p-4 border rounded mb-4 text-center" style="max-height: 400px; overflow-y: auto; background-color: #f9fafb;">
+                <div th:each="stock : ${kospiStocks}">
+                    <div class="mb-4 p-4 border-b border-slate-300">
+                        <h3 class="text-lg font-semibold" th:text="${stock.name}"></h3>
+                        <p th:text="'Symbol: ' + ${stock.symbol}"></p>
+                        <!-- <p th:text="'Price: $' + ${stock.price}"></p> -->
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
+    <!-- Cryptocurrency Section -->
+    <div class="p-6">
+        <h2 class="text-xl text-center font-bold mb-4">암호화폐</h2>
+        <div class="p-4 border rounded mb-4 text-center" style="max-height: 400px; overflow-y: auto; background-color: #f9fafb;">
+            <div th:each="crypto : ${cryptoCurrencies}">
+                <div class="mb-4 p-4 border-b border-slate-300">
+                    <h3 class="text-lg font-semibold" th:text="${crypto.name}"></h3>
+                    <p th:text="'Symbol: ' + ${crypto.symbol}"></p>
+                    <!-- <p th:text="'Price: $' + ${crypto.price}"></p> -->
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>

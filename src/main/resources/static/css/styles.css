@@ -274,3 +274,55 @@ body {
 .hidden-menu ul li a:hover {
     background-color: #e0e0e0; /* 호버 시 배경색 변경 */
 }
+
+nav a {
+    line-height: 1.0rem;
+    padding: 0.185rem 0;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    width: max-content;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    padding: 0;
+    top: 100%;
+    left: 0;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 8px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown-content a:hover {
+    background-color: #ddd;
+}
+
+/* Weather Icon Container */
+.weather-icon-container,
+.forecast-icon-container {
+    background-color: rgba(0, 0, 0, 0.1); /* 연한 검정 배경 */
+    border-radius: 50%; /* 둥근 모양 */
+    padding: 10px; /* 아이콘과 배경 사이의 여백 */
+    display: inline-block; /* 아이콘을 중앙 정렬할 때 유용 */
+}
+
+/* Weather Icon */
+.weather-icon,
+.forecast-icon {
+    border-radius: 50%; /* 아이콘 자체를 둥글게 */
+}

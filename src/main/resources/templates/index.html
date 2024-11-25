@@ -26,92 +26,60 @@
                 <a href="/" class="text-lg font-bold tracking-tight">Caver</a>
             </div>
             <nav class="flex gap-8 ml-auto">
-                <a class="text-sm font-medium text-slate-800" href="/news">뉴스</a>
+                <!-- Dropdown for News -->
+                <div class="dropdown">
+                    <a class="text-sm font-medium text-slate-800 cursor-pointer">뉴스</a>
+                    <div class="dropdown-content">
+                        <a href="/news">전체뉴스</a>
+                        <a href="/news/head">헤드라인</a>
+                    </div>
+                </div>
+                <!-- Other navigation links -->
                 <a class="text-sm font-medium text-slate-800" href="/weather">날씨</a>
                 <a class="text-sm font-medium text-slate-800" href="/stock">증권</a>
                 <a class="text-sm font-medium text-slate-800" href="/community">게시판</a>
             </nav>
             <div class="flex items-center gap-2 ml-4">
                 <button class="btn-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
-                        viewBox="0 0 256 256">
-                        <path
-                            d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24ZM74.08,197.5a64,64,0,0,1,107.84,0,87.83,87.83,0,0,1-107.84,0ZM96,120a32,32,0,1,1,32,32A32,32,0,0,1,96,120Zm97.76,66.41a79.66,79.66,0,0,0-36.06-28.75,48,48,0,1,0-59.4,0,79.66,79.66,0,0,0-36.06,28.75,88,88,0,1,1,131.52,0Z" />
-                    </svg>
-                </button>
-                <!-- Button for Hamburger Menu -->
-                <button class="btn-icon hamburger">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                         viewBox="0 0 256 256">
                         <path
                             d="M224,128a8,8,0,0,1-8,8H40a8,8,0,0,1,0-16H216A8,8,0,0,1,224,128ZM40,72H216a8,8,0,0,0,0-16H40a8,8,0,0,0,0,16ZM216,184H40a8,8,0,0,0,0,16H216a8,8,0,0,0,0-16Z" />
                     </svg>
                 </button>
-
-                <!-- Hidden Menu (initially hidden) -->
-                <nav class="hidden-menu">
-                    <ul>
-                        <li><a href="#">Home</a></li>
-                        <li><a href="#">About</a></li>
-                        <li><a href="#">Services</a></li>
-                        <li><a href="#">Contact</a></li>
-                    </ul>
-                </nav>
             </div>
         </header>
     </div>
-    
-    <!--
-    <div>
-        <form action="/search" method="GET" class="search-form">
-            <input type="text" name="query" placeholder="검색어를 입력하세요" class="search-input" required>
-            <button type="submit" class="search-button">검색</button>
-        </form>
-    </div>
-    -->
 
-    <!-- News Section -->
+    <!-- News Headlines Section -->
     <div class="news-section">
-        <h2>Latest News</h2>
-        <div class="news-container">
-            <div class="news-card">
-                <img src="https://loremflickr.com/400/400/news" alt="News Image" class="news-image">
-                <div class="news-content">
-                    <h3 class="news-title">Breaking News: Major Earthquake Hits the West Coast</h3>
-                    <p class="news-description">A powerful earthquake struck the West Coast earlier today, causing
-                        widespread damage and disrupting power and transportation services.</p>
-                    <a href="#" class="news-link">Read More</a>
-                </div>
-            </div>
-            <div class="news-card">
-                <img src="https://loremflickr.com/400/400/sports" alt="News Image" class="news-image">
-                <div class="news-content">
-                    <h3 class="news-title">Local Team Wins Championship in Dramatic Fashion</h3>
-                    <p class="news-description">After a hard-fought season, the local team has emerged victorious,
-                        winning the championship title in a nail-biting final game.</p>
-                    <a href="#" class="news-link">Read More</a>
-                </div>
-            </div>
-            <div class="news-card">
-                <img src="https://loremflickr.com/400/400/entertainment" alt="News Image" class="news-image">
-                <div class="news-content">
-                    <h3 class="news-title">Celebrity Couple Announces Surprise Pregnancy</h3>
-                    <p class="news-description">The power couple has delighted fans with the news of their unexpected
-                        pregnancy, sparking excitement and speculation.</p>
-                    <a href="#" class="news-link">Read More</a>
+        <h2 class="text-xl text-center font-bold mb-4">주요 뉴스</h2>
+        <div class="news-container grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <!-- 3개의 헤드라인 뉴스만 출력 -->
+            <div th:each="article : ${top3News}" class="bg-white shadow-md rounded-lg overflow-hidden">
+                <img th:src="${article.urlToImage}" alt="뉴스 이미지"
+                    onerror="this.onerror=null; this.src='/img/no-image-icon.png';" class="w-full h-48 object-cover">
+                <div class="p-4">
+                    <h2 th:text="${article.title}" class="text-lg font-semibold mb-2"></h2>
+                    <p class="text-sm text-gray-500 mb-4">출처:
+                        <span th:text="${article.sourceName}"></span>
+                    </p>
+                    <a th:href="${article.url}" target="_blank"
+                        class="text-base font-semibold text-blue-500 hover:underline">기사 읽기</a>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Busan Weather Reslut Section -->
+    <!-- Busan Weather Result Section -->
     <div class="weather-section">
         <div class="weather-container">
             <div class="flex items-center">
-                <div id="weather-icon" class="mr-4">
+                <!-- 아이콘 컨테이너에 클래스 추가 -->
+                <div class="weather-icon-container mr-4">
                     <!-- 날씨 아이콘 -->
                     <img th:src="'https://openweathermap.org/img/wn/' + ${weatherData.iconCode} + '@2x.png'"
-                        alt="Weather Icon" />
+                        alt="Weather Icon" class="weather-icon" />
                 </div>
                 <div>
                     <h2 class="text-2xl font-bold mb-4">
@@ -127,30 +95,23 @@
         </div>
     </div>
 
-    <!-- Community Section -->
-    <div class="community-section">
-        <h2>Community Discussions</h2>
-        <div class="community-container">
-            <div class="community-card">
-                <img src="https://loremflickr.com/400/400/people" alt="Community Image" class="community-image">
-                <div class="community-content">
-                    <h3 class="community-title">New Hiking Trail Opening Soon</h3>
-                    <p class="community-description">Join the discussion about the upcoming opening of a brand-new
-                        hiking trail in the local area, perfect for outdoor enthusiasts.</p>
-                    <a href="#" class="community-link">Join Discussion</a>
-                </div>
-            </div>
-            <div class="community-card">
-                <img src="https://loremflickr.com/400/400/food" alt="Community Image" class="community-image">
-                <div class="community-content">
-                    <h3 class="community-title">Best Local Restaurants to Try</h3>
-                    <p class="community-description">Share your favorite dining spots and get recommendations from the
-                        community on the must-try restaurants in the area.</p>
-                    <a href="#" class="community-link">Join Discussion</a>
+    <!-- NASDAQ Stock Section -->
+    <div class="stock-section">
+        <div class="stock-container p-4 border rounded mb-4 bg-white shadow-md">
+            <h2 class="text-xl text-center font-bold mb-4">NASDAQ 주식</h2>
+            <div class="p-4 border rounded mb-4 text-center"
+                style="max-height: 400px; overflow-y: auto; background-color: #f9fafb;">
+                <div th:each="stock : ${nasdaqStocks}">
+                    <div class="mb-4 p-4 border-b border-slate-300">
+                        <h3 class="text-lg font-semibold" th:text="${stock.name}"></h3>
+                        <p th:text="'Symbol: ' + ${stock.symbol}"></p>
+                        <!--<p th:text="'Price: $' + ${stock.price}"></p>-->
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
     <script src="js/menu.js"></script>
 </body>
 
