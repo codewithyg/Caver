@@ -373,3 +373,43 @@ nav a {
 .close-btn.hidden {
     display: none;
 }
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  thead th {
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+  
+  tbody td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+  }
+  
+  tbody tr td[colspan="4"] {
+    color: #999;
+  }
+
+  .post-detail {
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+  }
+  
+  .post-meta {
+    font-size: 0.9em;
+    color: #666;
+  }
+  
+  .post-content {
+    margin-top: 20px;
+  }
+  
+  .post-actions button {
+    margin-right: 10px;
+  }

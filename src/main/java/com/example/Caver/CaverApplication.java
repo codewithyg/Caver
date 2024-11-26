@@ -14,6 +14,8 @@ public class CaverApplication {
 		System.setProperty("NEWS_API_KEY", dotenv.get("NEWS_API_KEY"));
 		System.setProperty("WEATHER_API_KEY", dotenv.get("WEATHER_API_KEY"));
 		System.setProperty("STOCK_API_KEY", dotenv.get("STOCK_API_KEY"));
+		System.setProperty("SPRING_SECURITY_USER_NAME", dotenv.get("SPRING_SECURITY_USER_NAME"));
+		System.setProperty("SPRING_SECURITY_USER_PASSWORD", dotenv.get("SPRING_SECURITY_USER_PASSWORD"));
 
 		SpringApplication.run(CaverApplication.class, args);
 	}
