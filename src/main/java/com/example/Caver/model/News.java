@@ -2,6 +2,14 @@ package com.example.Caver.model;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * 뉴스 데이터를 저장하는 DTO 역할
+ * title : 뉴스 제목
+ * urlToImage : 뉴스 이미지 URL
+ * url : 뉴스 기사 URL
+ * sourceName : 뉴스 출처
+ */
+
 @Getter
 @Setter
 public class News {

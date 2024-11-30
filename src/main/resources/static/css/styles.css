@@ -1,4 +1,3 @@
-/* Global Styles */
 body {
     font-family: 'Roboto', sans-serif;
     margin: 0;
@@ -7,7 +6,6 @@ body {
     color: #333;
 }
 
-/* Navigation Bar */
 .navbar {
     display: flex;
     justify-content: space-between;
@@ -31,7 +29,6 @@ body {
     background-color: #575757;
 }
 
-/* Section Styles */
 .news-section,
 .community-section {
     padding: 20px;
@@ -46,7 +43,7 @@ body {
     display: flex;
     gap: 20px;
     flex-wrap: wrap;
-    justify-content: center; /* Add this line for centering */
+    justify-content: center;
 }
 
 .weather-section {
@@ -62,28 +59,27 @@ body {
     display: flex;
     gap: 20px;
     flex-wrap: wrap;
-    justify-content: center; /* Add this line for centering */
+    justify-content: center;
 }
 
-/* News Cards */
 .news-card,
 .community-card {
     background-color: #f8f8f8;
     border-radius: 8px;
-    width: 30%; /* Adjust width for better card size */
+    width: 30%;
     padding: 15px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
-    align-items: center; /* Center content inside card */
+    align-items: center;
     text-align: center;
 }
 
 .news-card img,
 .community-card img {
     width: 100%;
-    height: 200px; /* Fixed height to avoid stretching */
-    object-fit: cover; /* Ensure the image fits properly */
+    height: 200px;
+    object-fit: cover;
     border-radius: 8px;
 }
 
@@ -113,10 +109,9 @@ body {
     text-decoration: underline;
 }
 
-/* Weather Styles */
 .weather-section {
     display: flex;
-    justify-content: center; /* Center content in the weather section */
+    justify-content: center;
     align-items: center;
 }
 
@@ -124,7 +119,7 @@ body {
     display: flex;
     gap: 20px;
     flex-direction: column;
-    align-items: center; /* Center the weather content */
+    align-items: center;
 }
 
 .weather-icon {
@@ -138,7 +133,7 @@ body {
     flex-direction: column;
     justify-content: center;
     gap: 5px;
-    text-align: center; /* Center text for weather details */
+    text-align: center;
 }
 
 .weather-details {
@@ -164,10 +159,9 @@ body {
     font-weight: bold;
 }
 
-/* Forecast Card Styles */
 .forecast-card {
-    background-color: #1c3e5e70; /* 어두운 배경색으로 변경 */
-    color: white; /* 텍스트 색상을 흰색으로 변경 */
+    background-color: #1c3e5e70;
+    color: white;
     padding: 15px;
     border-radius: 8px;
     text-align: center;
@@ -175,16 +169,14 @@ body {
 }
 
 .forecast-card img {
-    /* filter 속성 제거 */
-    width: 100px; /* 아이콘 크기를 적절하게 조정 */
+    width: 100px;
     height: auto;
 }
 
 .forecast-card p {
-    color: black; /* 텍스트 색상을 흰색으로 변경 */
+    color: black;
 }
 
-/* Community Section */
 .community-section {
     margin-top: 30px;
 }
@@ -193,7 +185,6 @@ body {
     color: #0066cc;
 }
 
-/* 검색 폼 스타일 */
 .search-form {
     display: flex;
     justify-content: center;
@@ -227,53 +218,47 @@ body {
     background-color: #004c99;
   }
 
-/* 숨겨진 메뉴 기본 설정 */
 .hidden-menu {
     display: none;
     position: absolute;
-    top: 60px; /* 헤더 높이에 맞게 조정 */
+    top: 60px;
     right: 10px;
     background-color: white;
-    border-radius: 8px; /* 둥근 모서리 */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 그림자 효과 */
-    transition: all 0.3s ease; /* 부드러운 전환 효과 */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
     z-index: 100;
-    opacity: 0; /* 처음에 메뉴가 보이지 않도록 설정 */
-    transform: translateY(-10px); /* 살짝 위로 이동한 상태에서 시작 */
+    opacity: 0;
+    transform: translateY(-10px);
 }
 
-/* 메뉴가 열릴 때의 스타일 */
 .show-menu {
     display: block;
-    opacity: 1; /* 메뉴가 완전히 보이도록 설정 */
-    transform: translateY(0); /* 원래 위치로 이동 */
+    opacity: 1;
+    transform: translateY(0);
 }
 
-/* 메뉴 리스트 스타일 */
 .hidden-menu ul {
     list-style-type: none;
     padding: 10px;
     margin: 0;
 }
 
-/* 각 메뉴 항목의 간격과 스타일 */
 .hidden-menu ul li {
     margin: 8px 0;
 }
 
-/* 링크 스타일 */
 .hidden-menu ul li a {
     text-decoration: none;
-    color: #333; /* 글자 색상 */
+    color: #333;
     padding: 10px 15px;
-    border-radius: 5px; /* 둥근 버튼 느낌 */
-    background-color: #f0f0f0; /* 기본 배경 색상 */
-    transition: background-color 0.3s ease; /* 배경색 전환 효과 */
+    border-radius: 5px;
+    background-color: #f0f0f0;
+    transition: background-color 0.3s ease;
 }
 
-/* 링크에 마우스를 올렸을 때의 효과 */
 .hidden-menu ul li a:hover {
-    background-color: #e0e0e0; /* 호버 시 배경색 변경 */
+    background-color: #e0e0e0;
 }
 
 nav a {
@@ -313,63 +298,60 @@ nav a {
     background-color: #ddd;
 }
 
-/* Weather Icon Container */
 .weather-icon-container,
 .forecast-icon-container {
-    background-color: rgba(0, 0, 0, 0.1); /* 연한 검정 배경 */
-    border-radius: 50%; /* 둥근 모양 */
-    padding: 10px; /* 아이콘과 배경 사이의 여백 */
-    display: inline-block; /* 아이콘을 중앙 정렬할 때 유용 */
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+    padding: 10px;
+    display: inline-block;
 }
 
-/* Weather Icon */
 .weather-icon,
 .forecast-icon {
-    border-radius: 50%; /* 아이콘 자체를 둥글게 */
+    border-radius: 50%;
 }
 
 .hamburger-menu {
-    right: 0; /* 오른쪽 정렬 */
-    width: 250px; /* 메뉴 폭 줄이기 */
-    height: 100%; /* 화면 전체 높이 */
-    text-align: center; /* 글자 가운데 정렬 */
-    background-color: #ffffff; /* 배경색 */
-    padding: 20px; /* 내부 여백 */
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* 그림자 추가 */
-    font-weight: bold; /* 글자 bold 처리 */
+    right: 0;
+    width: 250px;
+    height: 100%;
+    text-align: center;
+    background-color: #ffffff;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    font-weight: bold;
     z-index: 20;
 }
 
 .close-btn {
-    background: none; /* 배경 제거 */
-    border: none; /* 테두리 제거 */
-    cursor: pointer; /* 마우스 포인터 변경 */
-    z-index: 50; /* 닫기 버튼이 메뉴 위에 나타나도록 설정 */
+    background: none;
+    border: none;
+    cursor: pointer;
+    z-index: 50;
 }
 
 .hamburger-menu ul {
-    list-style: none; /* 리스트 스타일 제거 */
+    list-style: none;
     padding: 0;
 }
 
 .hamburger-menu ul li {
-    margin-bottom: 20px; /* 리스트 간 간격 */
-    font-size: 18px; /* 글자 크기 조정 */
+    margin-bottom: 20px;
+    font-size: 18px;
 }
 
 .hamburger-menu.hidden {
-    transform: translateX(100%); /* 화면에서 숨기기 */
+    transform: translateX(100%);
 }
 
 .news-submenu.hidden {
-    display: none; /* 서브 메뉴 숨김 */
+    display: none;
 }
 
 .news-submenu {
-    font-size: 14px; /* 글자 크기 조정 */
+    font-size: 14px;
 }
 
-/* Close Button Styling */
 .close-btn.hidden {
     display: none;
 }

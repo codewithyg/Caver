@@ -12,6 +12,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
+/**
+ * 주식 정보를 제공하는 기능을 제어하는 컨트롤러
+ */
+
 @Controller
 public class StockController {
 
@@ -22,18 +26,20 @@ public class StockController {
         this.stockService = stockService;
     }
 
+    // NASDAQ, DOWJONES, 암호화폐 데이터를 가져와 뷰(Thymeleaf)에 전달
     @GetMapping("/stock")
     public String showStocks(Model model) {
         List<Stock> nasdaqStocks = stockService.getNasdaqStocks();
-        List<Stock> kospiStocks = stockService.getKospiStocks();
+        List<Stock> dowStocks = stockService.getDowStocks();
         List<Stock> cryptoCurrencies = stockService.getCryptoCurrencies();
         
         model.addAttribute("nasdaqStocks", nasdaqStocks);
-        model.addAttribute("kospiStocks", kospiStocks);
+        model.addAttribute("dowStocks", dowStocks);
         model.addAttribute("cryptoCurrencies", cryptoCurrencies);
         return "stock";
     }
 
+    // Symbol 검색 결과와 차트 데이터를 뷰(Thymeleaf)에 전달
     @GetMapping("/stock/search")
     public String searchStocks(@RequestParam("query") String query, Model model) {
         List<StockQuote> searchResults = stockService.searchStocksBySymbol(query);

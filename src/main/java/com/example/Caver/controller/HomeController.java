@@ -12,6 +12,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.util.*;
 
+/**
+ * index의 처리를 위한 컨트롤러
+ */
+
 @Controller
 public class HomeController {
     private final WeatherService weatherService;
@@ -25,7 +29,8 @@ public class HomeController {
         this.weatherService = weatherService;
         this.stockService = stockService;
     }
-
+    
+    // 메인 페이지의 뉴스, 날씨, 주식 정보 제공
     @GetMapping("/")
     public String home(Model model) {
         String city = "Busan";

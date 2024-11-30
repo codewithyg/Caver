@@ -14,6 +14,10 @@ import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * 주식 데이터 API 호출 및 처리 로직 담당
+ */
+
 @Service
 public class StockService {
 
@@ -34,6 +38,7 @@ public class StockService {
     private final String DOWJONES_API_URL = "https://financialmodelingprep.com/api/v3/dowjones_constituent?";
     private final String CRYPTO_API_URL = "https://financialmodelingprep.com/api/v3/symbol/available-cryptocurrencies?";
 
+    // Symbol을 검색어로 사용하여 주식 검색 결과 반환
     public List<StockQuote> searchStocksBySymbol(String query) {
         RestTemplate restTemplate = new RestTemplate();
         String url = UriComponentsBuilder.fromHttpUrl(STOCK_SEARCH_API_URL + query)
@@ -47,6 +52,8 @@ public class StockService {
         }
     }
 
+    // Symbol의 과거 주식 데이터를 반환
+    // 차트 기능을 위해 사용
     public List<HistoricalStockData> getStockChartData(String symbol) {
         RestTemplate restTemplate = new RestTemplate();
         String url = UriComponentsBuilder.fromHttpUrl(STOCK_CHART_API_URL + symbol)
@@ -62,6 +69,7 @@ public class StockService {
         }
     }
 
+    // NASDAQ 주식 목록 반환
     public List<Stock> getNasdaqStocks() {
         RestTemplate restTemplate = new RestTemplate();
         String url = NASDAQ_API_URL + "apikey=" + apiKey;
@@ -69,13 +77,15 @@ public class StockService {
         return stocks != null ? Arrays.asList(stocks) : List.of();
     }
 
-    public List<Stock> getKospiStocks() {
+    // DOWJONES 주식 목록 반환
+    public List<Stock> getDowStocks() {
         RestTemplate restTemplate = new RestTemplate();
         String url = DOWJONES_API_URL + "apikey=" + apiKey;
         Stock[] stocks = restTemplate.getForObject(url, Stock[].class);
         return stocks != null ? Arrays.asList(stocks) : List.of();
     }
 
+    // 암호화폐 목록 반환
     public List<Stock> getCryptoCurrencies() {
         RestTemplate restTemplate = new RestTemplate();
         String url = CRYPTO_API_URL + "apikey=" + apiKey;

@@ -13,6 +13,11 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.text.SimpleDateFormat;
 
+/**
+ * 날씨 API 호출 및 데이터 처리
+ * OpenWeatherMap API 사용
+ */
+
 @Service
 public class WeatherService {
 
@@ -22,11 +27,12 @@ public class WeatherService {
     private final String CURRENT_WEATHER_API_URL  = "https://api.openweathermap.org/data/2.5/weather?q=";
     private String FORECAST_API_URL = "https://api.openweathermap.org/data/2.5/forecast?";
 
-    // 도시 이름을 인코딩
+    // 도시 이름을 인코딩 (띄어쓰기 처리)
     private String encodeCityName(String cityName) {
         return cityName.replace(" ", "+");
     }
 
+    // 현재 날씨 정보를 가져와 Weather 객체로 반환 (도시명 기준)
     public Weather getCurrentWeather(String cityName) {
         String encodedCityName = encodeCityName(cityName);
         String urlWithApiKey = CURRENT_WEATHER_API_URL + encodedCityName + "&lang=kr&appid=" + apiKey + "&units=metric";
@@ -63,6 +69,7 @@ public class WeatherService {
         }
     }
 
+    // 5일간의 일기 예보를 가져와 Forecast 리스트로 반환
     public List<Forecast> getFiveDayForecast(String cityName) {
         String encodedCityName = encodeCityName(cityName);
 

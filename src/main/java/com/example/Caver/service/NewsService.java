@@ -6,8 +6,12 @@ import org.springframework.web.client.RestTemplate;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import com.example.Caver.model.News;
-
 import java.util.*;
+
+/**
+ * 뉴스 API 호출 및 데이터 처리
+ * newsapi.org API 사용
+ */
 
 @Service
 public class NewsService {
@@ -15,7 +19,8 @@ public class NewsService {
     @Value("${news.api.key}")
     private String apiKey;
 
-    // 뉴스 받기
+    // 검색어로 뉴스 기사 검색
+    // API 호출 후 응답 JSON을 News 객체 리스트로 반환
     public List<News> getNews(String query, String sortBy, int page) {
         RestTemplate restTemplate = new RestTemplate();
         String url = "https://newsapi.org/v2/everything?q=" + query + 
@@ -44,7 +49,7 @@ public class NewsService {
         return newsList;
     }
 
-    // 뉴스 결과 수
+    // 검색한 뉴스 기사의 총 개수를 반환
     public int getTotalNews(String query) {
         RestTemplate restTemplate = new RestTemplate();
         String url = "https://newsapi.org/v2/everything?q=" + query + "&apiKey=" + apiKey;
@@ -55,7 +60,7 @@ public class NewsService {
     }
 
 
-    // 최신 헤드라인 받기
+    // 최신 헤드라인 기사를 호출 (미국 기준)
     public List<News> getHeadLines(int page) {
         RestTemplate restTemplate = new RestTemplate();
         String urlWithApiKeyAndPage = "https://newsapi.org/v2/top-headlines?country=us&pageSize=9&apiKey=" + apiKey + "&page=" + page;
@@ -78,24 +83,24 @@ public class NewsService {
             newsList.add(newsArticle);
         }
 
-        // 새로고침 시 헤드라인 섞기
+        // 헤드라인 섞기
         Collections.shuffle(newsList);
 
         // 최신 헤드라인 목록 반환
         return newsList; 
     }
 
-    // 최신 헤드라인 결과 수
+    // 최신 헤드라인 뉴스 총 개수 반환
     public int getTotalHeadLines() {
         RestTemplate restTemplate = new RestTemplate();
         String urlWithApiKey = "https://newsapi.org/v2/top-headlines?country=us&apiKey=" + apiKey;
         String response = restTemplate.getForObject(urlWithApiKey, String.class);
 
         JSONObject jsonResponse = new JSONObject(response);
-        return jsonResponse.getInt("totalResults"); // 총 결과 수
+        return jsonResponse.getInt("totalResults");
     }
 
-    // 카테고리별 헤드라인 받기
+    // 카테고리의 헤드라인 뉴스 검색
     public List<News> getHeadLinesByCategory(String category, int page) {
         RestTemplate restTemplate = new RestTemplate();
         String urlWithCategoryAndPage = "https://newsapi.org/v2/top-headlines?country=us&category=" + category + "&pageSize=9&page=" + page + "&apiKey=" + apiKey;
@@ -118,11 +123,11 @@ public class NewsService {
             newsList.add(newsArticle);
         }
         
-        // 카테고리별 헤드라인 목록 반환
+        // 카테고리별 헤드라인 뉴스 목록 반환
         return newsList;
     }
 
-    // 카테고리별 헤드라인 결과 수
+    // 카테고리의 헤드라인 뉴스 총 개수 반환
     public int getTotalHeadLinesByCategory(String category) {
         RestTemplate restTemplate = new RestTemplate();
         String urlWithCategory = "https://newsapi.org/v2/top-headlines?country=us&category=" + category + "&apiKey=" + apiKey;

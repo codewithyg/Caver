@@ -6,6 +6,16 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * 게시판 게시글 데이터 저장하는 DTO
+ * boardNO : 게시글 번호
+ * writer : 작성자
+ * title : 제목
+ * content : 내용
+ * regDate : 게시글 등록 날짜
+ * password : 게시글 작성 시 비밀번호 (암호화 저장)
+ */
+
 @Getter
 @Setter
 @Entity

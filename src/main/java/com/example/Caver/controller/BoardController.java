@@ -10,6 +10,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * 게시판 기능을 제어하는 컨트롤러
+ */
+
 @Controller
 @RequestMapping("/board")
 public class BoardController {
@@ -17,7 +21,7 @@ public class BoardController {
     @Autowired
     private BoardService boardService;
 
-    // 게시글 목록
+    // 게시판의 게시글 목록 표시 (페이징 처리)
     @GetMapping
     public String listBoards(@RequestParam(defaultValue = "0") int page, Model model) {
         Pageable pageable = PageRequest.of(page, 10); // 10 posts per page
@@ -36,7 +40,7 @@ public class BoardController {
         return "boardwrite";
     }
 
-    // 게시글 작성 처리
+    // 게시글 작성 처리 (DB에 저장)
     @PostMapping("/new")
     public String writeBoard(@RequestParam String writer, @RequestParam String title, @RequestParam String content, @RequestParam String password) {
         Board board = new Board();
@@ -48,7 +52,7 @@ public class BoardController {
         return "redirect:/board";
     }
 
-    // 게시글 상세보기
+    // 게시판의 게시글 내용 보기
     @GetMapping("/{boardNo}")
     public String viewBoard(@PathVariable int boardNo, Model model) {
         model.addAttribute("board", boardService.getBoardById(boardNo));
@@ -68,7 +72,7 @@ public class BoardController {
         }
     }
 
-    // 게시글 수정 처리
+    // 게시글 수정 처리 (DB에 변경사항 저장)
     @PostMapping("/update/{boardNo}")
     public String updateBoard(@PathVariable int boardNo, Board updatedBoard, Model model) {
         try {

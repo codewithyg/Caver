@@ -4,6 +4,19 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Service;
 
+/**
+ * 현재 날씨 데이터를 저장하는 DTO
+ * location : 위치
+ * description : 날씨 설명
+ * temperature : 온도
+ * humidity : 습도
+ * windSpeed : 풍속
+ * tempMin : 최저온도
+ * tempMax : 최고온도
+ * feelsLike : 체감온도
+ * iconCode : 날씨 아이콘
+ */
+
 @Getter
 @Setter
 public class Weather {
