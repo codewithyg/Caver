@@ -23,9 +23,9 @@ public class NewsService {
     // API 호출 후 응답 JSON을 News 객체 리스트로 반환
     public List<News> getNews(String query, String sortBy, int page) {
         RestTemplate restTemplate = new RestTemplate();
-        String url = "https://newsapi.org/v2/everything?q=" + query + 
-                     "&sortBy=" + sortBy + 
-                     "&pageSize=9&page=" + page + 
+        String url = "https://newsapi.org/v2/everything?q=" + query +
+                     "&sortBy=" + sortBy +
+                     "&pageSize=9&page=" + page +
                      "&apiKey=" + apiKey;
         String response = restTemplate.getForObject(url, String.class);
 
@@ -87,7 +87,7 @@ public class NewsService {
         Collections.shuffle(newsList);
 
         // 최신 헤드라인 목록 반환
-        return newsList; 
+        return newsList;
     }
 
     // 최신 헤드라인 뉴스 총 개수 반환
@@ -122,7 +122,7 @@ public class NewsService {
             );
             newsList.add(newsArticle);
         }
-        
+
         // 카테고리별 헤드라인 뉴스 목록 반환
         return newsList;
     }

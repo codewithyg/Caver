@@ -37,7 +37,7 @@ public class HomeController {
         int page = random.nextInt(3) + 1;
 
         // 날씨
-        Weather weatherData = weatherService.getCurrentWeather(city);
+        Weather weatherData = weatherService.getWeather(city);
         model.addAttribute("weatherData", weatherData);
         
         // 뉴스

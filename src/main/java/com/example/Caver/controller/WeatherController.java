@@ -1,6 +1,5 @@
 package com.example.Caver.controller;
 
-import com.example.Caver.model.Forecast;
 import com.example.Caver.model.Weather;
 import com.example.Caver.service.WeatherService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,37 +7,24 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import java.util.*;
-
-/**
- * 날씨 정보를 제공하는 기능을 제어하는 컨트롤러
- */
 
 @Controller
 public class WeatherController {
 
-    private final WeatherService weatherService;
-
     @Autowired
-    public WeatherController(WeatherService weatherService) {
-        this.weatherService = weatherService;
-    }
+    private WeatherService weatherService;
 
-    // 입력한 도시의 현재 날씨와 5일간의 일기 예보 데이터를 가져와 뷰(Thymeleaf)에 전달
-    // 유효하지 않은 도시 입력 시 에러메시지를 전달하여 뷰(Thymeleaf)에서 weathererro.js를 이용하여 에러 처리
+    // /weather 경로에서 날씨 검색
     @GetMapping("/weather")
-    public String showWeather(@RequestParam(defaultValue = "Busan") String city, Model model) {
+    public String getWeather(@RequestParam(defaultValue = "부산") String city, Model model) {
         try {
-            Weather weatherData = weatherService.getCurrentWeather(city);
-            List<Forecast> forecastData = weatherService.getFiveDayForecast(city);
-
-            model.addAttribute("weatherData", weatherData);
-            model.addAttribute("forecastData", forecastData);
+            Weather weather = weatherService.getWeather(city);
+            model.addAttribute("city", city);
+            model.addAttribute("weatherData", weather);
+            return "weather"; // weather.html로 결과 전달
         } catch (Exception e) {
-            model.addAttribute("errorMessage", "도시를 다시 검색해주세요.");
-            return "redirect:/weather?error=true";
+            model.addAttribute("errorMessage", "날씨 정보를 가져오는 데 문제가 발생했습니다.");
+            return "weather"; // 오류 메시지 전달
         }
-        return "weather";
     }
 }

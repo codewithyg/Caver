@@ -17,7 +17,7 @@ public class News {
     private String urlToImage;
     private String url;
     private String sourceName;
-    
+
     public News(String title, String urlToImage, String url, String sourceName) {
         this.title = title;
         this.urlToImage = urlToImage;

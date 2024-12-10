@@ -24,13 +24,13 @@ public class StockService {
     @Value("${stock.api.key}")
     private String apiKey;
 
-    private LocalDate currentDate = LocalDate.now();
-    private LocalDate date1mAgo  = currentDate.minusMonths(1);
+    private final LocalDate currentDate = LocalDate.now();
+    private final LocalDate date1mAgo  = currentDate.minusMonths(1);
 
-    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-    private String currentDateString = currentDate.format(formatter);
-    private String date1mAgoString = date1mAgo.format(formatter);
+    private final String currentDateString = currentDate.format(formatter);
+    private final String date1mAgoString = date1mAgo.format(formatter);
 
     private final String STOCK_SEARCH_API_URL = "https://financialmodelingprep.com/api/v3/quote/";
     private final String STOCK_CHART_API_URL = "https://financialmodelingprep.com/api/v3/historical-chart/30min/";
