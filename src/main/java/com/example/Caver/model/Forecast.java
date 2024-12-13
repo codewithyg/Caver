@@ -10,11 +10,10 @@ import lombok.Setter;
 @Getter 
 @Setter
 public class Forecast {
-    private String date;                   // 날짜
-    private double tempMin;                    // 최저온도
-    private double tempMax;                    // 최고온도
-    private double snow;
-    private double rain;
-    private String sky;
+    private String dateTime;                   // 날짜
+    private double temp;
+    private int humidity;                      // 습도
+    private double windSpeed;                  // 풍속
+    private String description;                // 날씨 설명
     private String iconCode;                   // 날씨 아이콘
 }

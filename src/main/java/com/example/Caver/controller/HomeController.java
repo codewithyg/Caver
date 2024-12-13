@@ -33,11 +33,12 @@ public class HomeController {
     // 메인 페이지의 뉴스, 날씨, 주식 정보 제공
     @GetMapping("/")
     public String home(Model model) {
-        String city = "Busan";
+        String city = "부산";
         int page = random.nextInt(3) + 1;
 
         // 날씨
-        Weather weatherData = weatherService.getWeather(city);
+        Weather weatherData = weatherService.getCurrentWeather(city);
+        model.addAttribute("city", city);
         model.addAttribute("weatherData", weatherData);
         
         // 뉴스

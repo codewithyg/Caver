@@ -13,7 +13,6 @@
 </head>
 
 <!-- 날씨 정보 페이지 /weather -->
-
 <body class="font-['Newsreader','Noto Sans',sans-serif] bg-slate-50 min-h-screen flex flex-col">
     <!-- 네비게이션 바 -->
     <div class="flex flex-col h-full">
@@ -68,12 +67,6 @@
         if (urlParams.has('error') && urlParams.get('error') === 'true') {
             showErrorAlert("도시를 다시 검색해주세요");
         }
-
-        // 오류 메시지 표시 (날씨 데이터를 가져오는 데 문제가 생길 경우)
-        const errorMessage = /*[[${errorMessage}]]*/ '';
-        if (errorMessage) {
-            showErrorAlert(errorMessage);
-        }
     </script>
 
     <!-- 날씨 검색 폼 -->
@@ -86,16 +79,39 @@
 
     <!-- 현재 날씨 섹션 -->
     <section class="weather-section p-6">
-        <div class="flex flex-col items-center">
-            <h2 class="text-2xl font-bold mb-4"><span th:text="${city}"></span>의 현재 날씨</h2>
-            <p class="text-base font-semibold">기온: <span th:text="${weatherData?.temperature}"></span>°C</p>
-            <p class="text-base font-semibold">습도: <span th:text="${weatherData?.humidity}"></span>%</p>
-            <p class="text-base font-semibold">풍속: <span th:text="${weatherData?.windSpeed}"></span> m/s</p>
-            <p class="text-base font-semibold">최고 온도: <span th:text="${weatherData?.tempMax}"></span>°C</p>
-            <p class="text-base font-semibold">최저 온도: <span th:text="${weatherData?.tempMin}"></span>°C</p>
+        <div class="flex items-center">
+            <div id="weather-icon" class="weather-icon-container mr-4">
+                <img th:src="'https://openweathermap.org/img/wn/' + ${weatherData?.iconCode} + '@2x.png'"
+                    alt="Weather Icon" class="weather-icon" />
+            </div>
+            <div>
+                <h2 class="text-2xl font-bold mb-4"><span th:text="${city}"></span>의 현재 날씨</h2>
+                <p class="text-base font-semibold">날씨: <span th:text="${weatherData.description}"></span></p>
+                <p class="text-base font-semibold">온도: <span th:text="${weatherData.temperature}"></span>°C</p>
+                <p class="text-base font-semibold">습도: <span th:text="${weatherData.humidity}"></span>%</p>
+                <p class="text-base font-semibold">풍속: <span th:text="${weatherData.windSpeed}"></span> m/s</p>
+                <p class="text-base font-semibold">체감 온도: <span th:text="${weatherData.feelsLike}"></span> °C</p>
+            </div>
         </div>
     </section>
 
+    <!-- 일기예보 섹션 -->
+    <section class="forecast-section p-6 mt-8">
+        <h2 class="text-2xl font-bold mb-4 text-center">일기예보(12시 기준)</h2>
+        <div class="forecast-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div th:each="forecast : ${forecastData}" class="forecast-card bg-slate-100 p-4 rounded-lg text-center">
+                <p class="text-lg font-semibold" th:text="${forecast.dateTime}"></p>
+                <div class="forecast-icon-container mx-auto my-2">
+                    <img th:src="'http://openweathermap.org/img/wn/' + ${forecast.iconCode} + '@2x.png'"
+                        alt="Forecast Icon" class="forecast-icon" />
+                </div>
+                <p class="text-base font-semibold" th:text="'날씨: ' + ${forecast.description}"></p>
+                <p class="text-base font-semibold" th:text="'온도: ' + ${forecast.temp} + '°C'"></p>
+                <p class="text-base font-semibold" th:text="'풍속: ' + ${forecast.windSpeed} + 'm/s'"></p>
+                <p class="text-base font-semibold" th:text="'습도: ' + ${forecast.humidity} + '%'"></p>
+            </div>
+        </div>
+    </section>
 
     <!-- 햄버거 메뉴를 위한 JS 파일 -->
     <script src="/js/menu.js"></script>
