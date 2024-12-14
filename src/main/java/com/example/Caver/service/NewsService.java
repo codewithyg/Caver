@@ -3,14 +3,17 @@ package com.example.Caver.service;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 import com.example.Caver.model.News;
 import java.util.*;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
 
 /**
- * 뉴스 API 호출 및 데이터 처리
- * newsapi.org API 사용
+ * DeepSearch News API를 활용하여 뉴스 제공 처리
  */
 
 @Service
@@ -19,121 +22,161 @@ public class NewsService {
     @Value("${news.api.key}")
     private String apiKey;
 
-    // 검색어로 뉴스 기사 검색
-    // API 호출 후 응답 JSON을 News 객체 리스트로 반환
-    public List<News> getNews(String query, String sortBy, int page) {
-        RestTemplate restTemplate = new RestTemplate();
-        String url = "https://newsapi.org/v2/everything?q=" + query +
-                     "&sortBy=" + sortBy +
-                     "&pageSize=9&page=" + page +
-                     "&apiKey=" + apiKey;
+    private static final String DOMESTIC_NEWS_URL = "https://api-v2.deepsearch.com/v1/articles";
+    private static final String GLOBAL_NEWS_URL = "https://api-v2.deepsearch.com/v1/global-articles";
+
+    private final RestTemplate restTemplate = new RestTemplate();
+
+    // 한 번에 가져올 뉴스 수 (예: 100개)
+    private static final int PAGE_SIZE = 9;
+
+    // 국내 뉴스 처리
+    public Map<String, Object> searchDomesticNews(String query, int page) {
+        String url = UriComponentsBuilder.fromHttpUrl(DOMESTIC_NEWS_URL)
+                .queryParam("keyword", query)
+                .queryParam("date_from", getDateParameters().get("date_from"))
+                .queryParam("date_to", getDateParameters().get("date_to"))
+                .queryParam("page_size", PAGE_SIZE)
+                .queryParam("page", page)
+                .queryParam("api_key", apiKey)
+                .toUriString();
+
+        // API 요청 및 응답 처리
         String response = restTemplate.getForObject(url, String.class);
-
-        // JSON 파싱
         JSONObject jsonResponse = new JSONObject(response);
-        JSONArray articles = jsonResponse.getJSONArray("articles");
 
-        // JSON 데이터를 News 객체로 변환
+        // total_pages 값을 포함
+        int totalPages = jsonResponse.getInt("total_pages");
+
+        JSONArray articles = jsonResponse.getJSONArray("data");
+
         List<News> newsList = new ArrayList<>();
         for (int i = 0; i < articles.length(); i++) {
             JSONObject article = articles.getJSONObject(i);
-            News newsArticle = new News(
-                article.getString("title"),
-                article.optString("urlToImage", "default-image-url"),
-                article.getString("url"),
-                article.getJSONObject("source").getString("name")
+
+            String title = article.getString("title");
+            String urlToImage = article.optString("image_url", null);
+            String articleUrl = article.getString("content_url");
+            String publisher = article.getString("publisher");
+
+            News newsItem = new News(
+                    title,
+                    urlToImage,
+                    articleUrl,
+                    publisher
             );
-            newsList.add(newsArticle);
+
+            newsList.add(newsItem);
         }
 
-        return newsList;
+        // 결과를 Map으로 반환하여 total_pages와 함께 제공
+        Map<String, Object> result = new HashMap<>();
+        result.put("newsList", newsList);
+        result.put("totalPages", totalPages);
+
+        return result;
     }
 
-    // 검색한 뉴스 기사의 총 개수를 반환
-    public int getTotalNews(String query) {
-        RestTemplate restTemplate = new RestTemplate();
-        String url = "https://newsapi.org/v2/everything?q=" + query + "&apiKey=" + apiKey;
+    // 카테고리 별 국내 뉴스 처리
+    public Map<String, Object> getDomesticNewsBySection(String section, int page) {
+        String url = UriComponentsBuilder.fromHttpUrl(DOMESTIC_NEWS_URL + "/" + section)
+                .queryParam("date_from", getDateParameters().get("date_from"))
+                .queryParam("date_to", getDateParameters().get("date_to"))
+                .queryParam("page", page)
+                .queryParam("page_size", PAGE_SIZE)
+                .queryParam("api_key", apiKey)
+                .toUriString();
+
+        // API 요청 및 응답 처리
         String response = restTemplate.getForObject(url, String.class);
-
         JSONObject jsonResponse = new JSONObject(response);
-        return jsonResponse.getInt("totalResults");
-    }
 
+        // total_pages 값을 포함
+        int totalPages = jsonResponse.getInt("total_pages");
 
-    // 최신 헤드라인 기사를 호출 (미국 기준)
-    public List<News> getHeadLines(int page) {
-        RestTemplate restTemplate = new RestTemplate();
-        String urlWithApiKeyAndPage = "https://newsapi.org/v2/top-headlines?country=us&pageSize=9&apiKey=" + apiKey + "&page=" + page;
-        String response = restTemplate.getForObject(urlWithApiKeyAndPage, String.class);
+        JSONArray articles = jsonResponse.getJSONArray("data");
 
-        // JSON 파싱
-        JSONObject jsonResponse = new JSONObject(response);
-        JSONArray articles = jsonResponse.getJSONArray("articles");
-
-        // JSON 데이터를 News 객체로 변환
         List<News> newsList = new ArrayList<>();
         for (int i = 0; i < articles.length(); i++) {
             JSONObject article = articles.getJSONObject(i);
-            News newsArticle = new News(
-                article.getString("title"),
-                article.optString("urlToImage", "default-image-url"),
-                article.getString("url"),
-                article.getJSONObject("source").getString("name")
+
+            String title = article.getString("title");
+            String urlToImage = article.optString("image_url", null);
+            String articleUrl = article.getString("content_url");
+            String publisher = article.getString("publisher");
+
+            News newsItem = new News(
+                    title,
+                    urlToImage,
+                    articleUrl,
+                    publisher
             );
-            newsList.add(newsArticle);
+
+            newsList.add(newsItem);
         }
 
-        // 헤드라인 섞기
-        Collections.shuffle(newsList);
+        // 결과를 Map으로 반환하여 total_pages와 함께 제공
+        Map<String, Object> result = new HashMap<>();
+        result.put("newsList", newsList);
+        result.put("totalPages", totalPages);
 
-        // 최신 헤드라인 목록 반환
-        return newsList;
+        return result;
     }
 
-    // 최신 헤드라인 뉴스 총 개수 반환
-    public int getTotalHeadLines() {
-        RestTemplate restTemplate = new RestTemplate();
-        String urlWithApiKey = "https://newsapi.org/v2/top-headlines?country=us&apiKey=" + apiKey;
-        String response = restTemplate.getForObject(urlWithApiKey, String.class);
+    // 해외 뉴스 처리
+    public Map<String, Object> searchGlobalNews(String query, int page) {
+        String url = UriComponentsBuilder.fromHttpUrl(GLOBAL_NEWS_URL)
+                .queryParam("keyword", query)
+                .queryParam("date_from", getDateParameters().get("date_from"))
+                .queryParam("date_to", getDateParameters().get("date_to"))
+                .queryParam("page", page)
+                .queryParam("page_size", PAGE_SIZE)
+                .queryParam("api_key", apiKey)
+                .toUriString();
 
+        // API 요청 및 응답 처리
+        String response = restTemplate.getForObject(url, String.class);
         JSONObject jsonResponse = new JSONObject(response);
-        return jsonResponse.getInt("totalResults");
-    }
 
-    // 카테고리의 헤드라인 뉴스 검색
-    public List<News> getHeadLinesByCategory(String category, int page) {
-        RestTemplate restTemplate = new RestTemplate();
-        String urlWithCategoryAndPage = "https://newsapi.org/v2/top-headlines?country=us&category=" + category + "&pageSize=9&page=" + page + "&apiKey=" + apiKey;
-        String response = restTemplate.getForObject(urlWithCategoryAndPage, String.class);
+        // total_pages 값을 포함
+        int totalPages = jsonResponse.getInt("total_pages");
 
-        // JSON 파싱
-        JSONObject jsonResponse = new JSONObject(response);
-        JSONArray articles = jsonResponse.getJSONArray("articles");
+        JSONArray articles = jsonResponse.getJSONArray("data");
 
-        // JSON 데이터를 News 객체로 변환
         List<News> newsList = new ArrayList<>();
         for (int i = 0; i < articles.length(); i++) {
             JSONObject article = articles.getJSONObject(i);
-            News newsArticle = new News(
-                article.getString("title"),
-                article.optString("urlToImage", "default-image-url"),
-                article.getString("url"),
-                article.getJSONObject("source").getString("name")
+
+            String title = article.getString("title_ko");
+            String urlToImage = article.optString("image_url", null);
+            String articleUrl = article.getString("content_url");
+            String publisher = article.getString("publisher");
+
+            News newsItem = new News(
+                    title,
+                    urlToImage,
+                    articleUrl,
+                    publisher
             );
-            newsList.add(newsArticle);
+
+            newsList.add(newsItem);
         }
 
-        // 카테고리별 헤드라인 뉴스 목록 반환
-        return newsList;
+        // 결과를 Map으로 반환하여 total_pages와 함께 제공
+        Map<String, Object> result = new HashMap<>();
+        result.put("newsList", newsList);
+        result.put("totalPages", totalPages);
+
+        return result;
     }
 
-    // 카테고리의 헤드라인 뉴스 총 개수 반환
-    public int getTotalHeadLinesByCategory(String category) {
-        RestTemplate restTemplate = new RestTemplate();
-        String urlWithCategory = "https://newsapi.org/v2/top-headlines?country=us&category=" + category + "&apiKey=" + apiKey;
-        String response = restTemplate.getForObject(urlWithCategory, String.class);
-
-        JSONObject jsonResponse = new JSONObject(response);
-        return jsonResponse.getInt("totalResults");
+    private Map<String, String> getDateParameters() {
+        LocalDate today = LocalDate.now(ZoneId.of("Asia/Seoul"));
+        LocalDate oneWeekAgo = today.minusWeeks(1);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        return Map.of(
+                "date_from", oneWeekAgo.format(formatter),
+                "date_to", today.format(formatter)
+        );
     }
 }

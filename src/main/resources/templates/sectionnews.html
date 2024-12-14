@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caver</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64," />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="https://kit.fontawesome.com/your-font-awesome-kit.js" crossorigin="anonymous"></script>
+</head>
+
+<body class="font-['Newsreader','Noto Sans',sans-serif] bg-slate-50 min-h-screen flex flex-col">
+    <!-- 네비게이션 바 -->
+    <div class="flex flex-col h-full">
+        <header class="flex items-center justify-between border-b border-slate-200 px-4 py-3">
+            <div class="flex items-center gap-4 text-slate-800">
+                <div class="w-10 h-10">
+                    <a href="/">
+                        <img src="/img/Caver.png" alt="Logo" class="w-full h-full object-contain">
+                    </a>
+                </div>
+                <a href="/" class="text-xl font-bold tracking-tight">Caver</a>
+            </div>
+            <!-- 햄버거 메뉴 (닫혔을 때) -->
+            <button class="hamburger-btn text-slate-800 p-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                    viewBox="0 0 256 256">
+                    <path
+                        d="M224,128a8,8,0,0,1-8,8H40a8,8,0,0,1,0-16H216A8,8,0,0,1,224,128ZM40,72H216a8,8,0,0,0,0-16H40a8,8,0,0,0,0,16ZM216,184H40a8,8,0,0,0,0,16H216a8,8,0,0,0,0-16Z" />
+                </svg>
+            </button>
+        </header>
+
+        <!-- 햄버거 메뉴 (열렸을 때) -->
+        <nav class="hamburger-menu hidden fixed top-0 right-0 w-1/3 max-w-sm h-full bg-white shadow-lg p-6">
+            <!-- 햄버거 메뉴 닫기 버튼 -->
+            <button class="close-btn hidden text-slate-800 absolute top-4 right-4">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                    viewBox="0 0 256 256">
+                    <path
+                        d="M208.49,191.51a8,8,0,0,1-11.32,11.32L128,133.32,58.83,202.49a8,8,0,0,1-11.32-11.32L116.68,128,47.51,58.83a8,8,0,0,1,11.32-11.32L128,122.68l69.17-69.17a8,8,0,0,1,11.32,11.32L139.32,128Z" />
+                </svg>
+            </button>
+            <ul class="flex flex-col gap-4">
+                <li>
+                    <a href="#" class="text-lg font-medium toggle-news">뉴스</a>
+                    <ul class="news-submenu hidden ml-4 mt-2">
+                        <li><a href="/news" class="text-sm text-gray-600">국내뉴스</a></li>
+                        <li><a href="/global-news" class="text-sm text-gray-600">해외뉴스</a></li>
+                    </ul>
+                </li>
+                <li><a href="/weather" class="text-lg font-medium">날씨</a></li>
+                <li><a href="/stock" class="text-lg font-medium">증권</a></li>
+                <li><a href="/board" class="text-lg font-medium">게시판</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <!-- 뉴스 섹션 -->
+    <section class="px-10 py-6">
+        <!-- 뉴스 콘텐츠 -->
+        <div class="news-content grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+            <div th:each="article : ${newsData}" class="bg-white shadow-md rounded-lg overflow-hidden">
+                <img th:src="${article.urlToImage}" alt="뉴스 이미지"
+                     onerror="this.onerror=null; this.src='/img/no-image-icon.png';" class="w-full h-48 object-cover">
+                <div class="p-4">
+                    <h2 th:text="${article.title}" class="text-lg font-semibold mb-2"></h2>
+                    <p class="text-sm text-gray-500 mb-4">출처:
+                        <span th:text="${article.sourceName}"></span>
+                    </p>
+                    <a th:href="${article.url}" target="_blank"
+                       class="text-base font-semibold text-blue-500 hover:underline">기사 읽기</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 카테고리 버튼들 추가 -->
+        <div class="mb-6 flex justify-center space-x-4">
+            <!-- 카테고리 버튼들 -->
+            <a th:href="@{/news/{section}(section='politics')}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">정치</a>
+            <a th:href="@{/news/{section}(section='economy')}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">경제</a>
+            <a th:href="@{/news/{section}(section='society')}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">사회</a>
+            <a th:href="@{/news/{section}(section='culture')}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">문화</a>
+            <a th:href="@{/news/{section}(section='world')}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">글로벌</a>
+            <a th:href="@{/news/{section}(section='tech')}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">테크</a>
+            <a th:href="@{/news/{section}(section='entertainment')}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">엔터테이먼트</a>
+        </div>
+
+        <!-- 페이징 처리 -->
+        <div class="flex justify-center mt-6 space-x-2">
+            <a th:if="${currentPage > 1}"
+            th:href="'/news/' + ${selectedSection} + '?page=' + (${currentPage} - 1)"
+            class="px-4 py-2 bg-gray-300 rounded-lg">이전</a>
+            <span th:if="${currentPage == 1}"
+                class="px-4 py-2 bg-gray-300 rounded-lg cursor-not-allowed">이전</span>
+            
+            <span th:each="page : ${#numbers.sequence(startPage, endPage)}">
+                <a th:classappend="${page == currentPage} ? 'bg-blue-500 text-white' : 'bg-gray-300'"
+                th:href="'/news/' + ${selectedSection} + '?page=' + ${page}"
+                class="px-3 py-2 rounded-lg hover:bg-blue-700 hover:text-white cursor-pointer" th:text="${page}"></a>
+            </span>
+            
+            <a th:if="${currentPage < totalPages}"
+            th:href="'/news/' + ${selectedSection} + '?page=' + (${currentPage} + 1)"
+            class="px-4 py-2 bg-gray-300 rounded-lg">다음</a>
+            <span th:if="${currentPage == totalPages}"
+                class="px-4 py-2 bg-gray-300 rounded-lg cursor-not-allowed">다음</span>
+        </div>
+    </section>
+
+    <!-- 햄버거 메뉴를 위한 JS 파일 -->
+    <script src="/js/menu.js"></script>
+</body>
+
+</html>

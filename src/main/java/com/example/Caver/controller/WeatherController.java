@@ -24,8 +24,6 @@ public class WeatherController {
         this.weatherService = weatherService;
     }
 
-    // 입력한 도시의 현재 날씨와 5일간의 일기 예보 데이터를 가져와 뷰(Thymeleaf)에 전달
-    // 유효하지 않은 도시 입력 시 에러메시지를 전달하여 뷰(Thymeleaf)에서 weathererro.js를 이용하여 에러 처리
     @GetMapping("/weather")
     public String showWeather(@RequestParam(defaultValue = "부산") String city, Model model) {
         try {

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 뉴스 정보를 제공하는 기능을 제어하는 컨트롤러
@@ -24,86 +25,72 @@ public class NewsController {
         this.newsService = newsService;
     }
 
-    // 뉴스 검색 결과 제공
     @GetMapping("/news")
-    public String showNews(
-            @RequestParam(defaultValue = "all") String query,
-            @RequestParam(defaultValue = "relevancy") String sortBy,
-            @RequestParam(defaultValue = "1") int page,
-            Model model) {
-        int articlesPerPage = 9;
-        int totalArticles = newsService.getTotalNews(query);
-        int totalPages = (int) Math.ceil((double) totalArticles / articlesPerPage);
+    public String showDomesticNews(@RequestParam(defaultValue = "부산") String query,
+                                   @RequestParam(defaultValue = "1") int page,
+                                   Model model) {
+        Map<String, Object> result = newsService.searchDomesticNews(query, page);
 
-        totalPages = Math.min(totalPages, 10);
+        List<News> newsList = (List<News>) result.get("newsList");
+        int totalPages = (int) result.get("totalPages");
 
-        List<News> newsData = newsService.getNews(query, sortBy, page);
-
-        int groupSize = 5;
-        int currentGroup = (page - 1) / groupSize;
-        int startPage = currentGroup * groupSize + 1;
-        int endPage = Math.min(startPage + groupSize - 1, totalPages);
-
-        model.addAttribute("newsData", newsData);
+        model.addAttribute("newsData", newsList);
         model.addAttribute("currentPage", page);
+        model.addAttribute("query", query);
         model.addAttribute("totalPages", totalPages);
+
+        int startPage = ((page - 1) / 5) * 5 + 1;
+        int endPage = Math.min(startPage + 4, totalPages);
+
         model.addAttribute("startPage", startPage);
         model.addAttribute("endPage", endPage);
-        model.addAttribute("query", query);
-        model.addAttribute("sortBy", sortBy);
 
         return "news";
     }
 
-    // 최신 헤드라인 뉴스 제공
-    @GetMapping("/news/head")
-    public String showHeadLines(@RequestParam(defaultValue = "1") int page, Model model) {
-        int articlesPerPage = 9; // 한 페이지당 기사 수
-        int totalArticles = newsService.getTotalHeadLines();
-        int totalPages = (int) Math.ceil((double) totalArticles / articlesPerPage);
+    @GetMapping("/news/{section}")
+    public String showDomesticNewsBySection(@PathVariable String section,
+                                            @RequestParam(defaultValue = "1") int page,
+                                            Model model) {
+        Map<String, Object> result = newsService.getDomesticNewsBySection(section, page);
 
-        List<News> newsData = newsService.getHeadLines(page);
+        List<News> newsList = (List<News>) result.get("newsList");
+        int totalPages = (int) result.get("totalPages");
 
-        // 페이지네이션
-        int groupSize = 5;
-        int currentGroup = (page - 1) / groupSize;
-        int startPage = currentGroup * groupSize + 1;
-        int endPage = Math.min(startPage + groupSize - 1, totalPages);
-
-        model.addAttribute("newsData", newsData);
+        model.addAttribute("newsData", newsList);
         model.addAttribute("currentPage", page);
+        model.addAttribute("selectedSection", section);
         model.addAttribute("totalPages", totalPages);
+
+        int startPage = ((page - 1) / 5) * 5 + 1;
+        int endPage = Math.min(startPage + 4, totalPages);
+
         model.addAttribute("startPage", startPage);
         model.addAttribute("endPage", endPage);
 
-        return "headnews";
+        return "sectionnews";
     }
 
-    // 카테고리별 최신 헤드라인 뉴스 제공
-    @GetMapping("/news/head/{category}")
-    public String showCategoryNews(@PathVariable String category,
-                                    @RequestParam(defaultValue = "1") int page,
-                                    Model model) {
-        int articlesPerPage = 9;
-        int totalArticles = newsService.getTotalHeadLinesByCategory(category);
-        int totalPages = (int) Math.ceil((double) totalArticles / articlesPerPage);
+    @GetMapping("/global-news")
+    public String showGlobalNews(@RequestParam(defaultValue = "Apple") String query,
+                                 @RequestParam(defaultValue = "1") int page,
+                                 Model model) {
+        Map<String, Object> result = newsService.searchGlobalNews(query, page);
 
-        totalPages = Math.min(totalPages, 10);
+        List<News> newsList = (List<News>) result.get("newsList");
+        int totalPages = (int) result.get("totalPages");
 
-        List<News> categoryNews = newsService.getHeadLinesByCategory(category, page);
-
-        int groupSize = 5;
-        int currentGroup = (page - 1) / groupSize;
-        int startPage = currentGroup * groupSize + 1;
-        int endPage = Math.min(startPage + groupSize - 1, totalPages);
-
-        model.addAttribute("newsData", categoryNews);
-        model.addAttribute("selectedCategory", category);
+        model.addAttribute("newsData", newsList);
         model.addAttribute("currentPage", page);
+        model.addAttribute("query", query);
         model.addAttribute("totalPages", totalPages);
+
+        int startPage = ((page - 1) / 5) * 5 + 1;
+        int endPage = Math.min(startPage + 4, totalPages);
+
         model.addAttribute("startPage", startPage);
         model.addAttribute("endPage", endPage);
 
-        return "headnews";
+        return "globalnews";
     }
 }
